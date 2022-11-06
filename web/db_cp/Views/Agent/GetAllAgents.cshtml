@@ -1,0 +1,37 @@
+﻿@model AgentViewModel
+
+<div class="panel panel-default">
+    <table class="table table-bordered bg-light">
+        <thead>
+            <tr>
+                <td>
+                    <h3><font color="#ff5a6e">Id</font></h3>
+                </td>
+                <td>
+                    <h3><font color="#ff5a6e">Surname</font></h3>
+                </td>
+                <td>
+                    <h3><font color="#ff5a6e">Footballer</font></h3>
+                </td>
+                <td>
+                    <h3><font color="#ff5a6e">Country</font></h3>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (Agent agent in Model.agents)
+                {
+                    var player = Model.players.FirstOrDefault(elem => elem.Id == agent.PlayerId);
+
+                    if (player != null)
+                        ViewBag.FootballerSurname = player.Surname;
+                    else
+                        ViewBag.FootballerSurname = "null";
+
+                    @Html.Partial("AllAgents", agent)
+                }
+            }
+        </tbody>
+    </table>
+</div>
