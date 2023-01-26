@@ -1,0 +1,9 @@
+﻿{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost;Port=5432;Database=testing;User Id=postgres;Password=1801;",
+    "MSSQLServerConnection": "Server=localhost,1433\\Catalog=db_cp;Database=db_cp;User=sa;Password=Strong.Pwd-123;"
+  },
+
+  "Database": "PostgreSQL"
+  //"Database": "MSSQLServer"
+}
