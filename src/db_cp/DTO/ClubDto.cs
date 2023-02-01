@@ -11,4 +11,12 @@
     {
         public int Id { get; set; }
     }
+
+    public class ClubFilterDto
+    {
+        public string Name { get; set; }
+        public string Country { get; set; }
+        public uint? MinFoundationDate { get; set; }
+        public uint? MaxFoundationDate { get; set; }
+    }
 }

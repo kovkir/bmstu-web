@@ -15,12 +15,14 @@ namespace db_cp.Repository
             _appDBContext = appDBContext;
         }
 
-        public void Add(Agent model)
+        public Agent Add(Agent model)
         {
             try
             {
                 _appDBContext.Agent.Add(model);
                 _appDBContext.SaveChanges();
+
+                return GetByID(model.Id);
             }
             catch (Exception ex)
             {
@@ -29,7 +31,7 @@ namespace db_cp.Repository
             }
         }
 
-        public void Delete(int id)
+        public Agent Delete(int id)
         {
             try
             {
@@ -40,6 +42,8 @@ namespace db_cp.Repository
                     _appDBContext.Agent.Remove(agent);
                     _appDBContext.SaveChanges();
                 }
+
+                return agent;
             }
             catch (Exception ex)
             {
@@ -47,6 +51,25 @@ namespace db_cp.Repository
                 throw new Exception("Ошибка при удалении агента");
             }
         }
+
+        public Agent Update(Agent model)
+        {
+            try
+            {
+                var curModel = _appDBContext.Agent.FirstOrDefault(elem => elem.Id == model.Id);
+
+                _appDBContext.Entry(curModel).CurrentValues.SetValues(model);
+                _appDBContext.SaveChanges();
+
+                return GetByID(model.Id);
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+                throw new Exception("Ошибка при обновлении агента");
+            }
+        }
+
 
         public IEnumerable<Agent> GetAll()
         {
@@ -66,22 +89,6 @@ namespace db_cp.Repository
         public IEnumerable<Agent> GetBySurname(string surname)
         {
             return _appDBContext.Agent.Where(elem => elem.Surname == surname).ToList();
-        }
-
-        public void Update(Agent model)
-        {
-            try
-            {
-                var curModel = _appDBContext.Agent.FirstOrDefault(elem => elem.Id == model.Id);
-                _appDBContext.Entry(curModel).CurrentValues.SetValues(model);
-
-                _appDBContext.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                Console.Write(ex.Message);
-                throw new Exception("Ошибка при обновлении агента");
-            }
         }
     }
 }

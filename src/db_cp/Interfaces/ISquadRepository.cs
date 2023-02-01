@@ -11,10 +11,10 @@ namespace db_cp.Interfaces
 
         void AddSquadPlayer(int squadId, int playerId);
         void DeleteSquadPlayer(int squadId, int playerId);
-        void DeleteAllSquadPlayer(int playerId);
 
         IEnumerable<SquadPlayer> GetAllSquadPlayer();
         SquadPlayer GetSquadPlayer(int squadId, int playerId);
+
         IEnumerable<Player> GetMyPlayersBySquadId(int squadId);
     }
 }

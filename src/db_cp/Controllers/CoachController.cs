@@ -1,73 +1,4 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading.Tasks;
-//using db_cp.ViewModels;
-//using db_cp.Interfaces;
-//using db_cp.Mocks;
-//using db_cp.Services;
-//using Microsoft.AspNetCore.Mvc;
-//using db_cp.Models;
-//using Microsoft.Extensions.Logging;
-//using System.Reflection;
-
-//namespace db_cp.Controllers
-//{
-//    public class CoachController : Controller
-//    {
-//        //static private ICoachRepository coachRepository = new CoachMock();
-//        //private ICoachService coachService = new CoachService(coachRepository);
-
-//        private ICoachService coachService;
-//        private ISquadService squadService;
-//        private readonly ILogger<AccountController> logger;
-
-//        public CoachController(ICoachService coachService,
-//                               ISquadService squadService,
-//                               ILogger<AccountController> logger)
-//        {
-//            this.coachService = coachService;
-//            this.squadService = squadService;
-//            this.logger = logger;
-//        }
-
-//        public IActionResult GetAllCoaches(CoachSortState sortOrder = CoachSortState.IdAsc,
-//                                           string surname = null, string country = null,
-//                                           uint minWorkExperience = 0, uint maxWorkExperience = 0)
-//        {
-//            ViewBag.Title = "Coaches";
-
-//            logger.Log(LogLevel.Information, "user: {0}; method: {1}",
-//                User.Identity.Name,
-//                MethodBase.GetCurrentMethod().Name);
-
-//            ViewData["IdSort"] = sortOrder == CoachSortState.IdAsc ? CoachSortState.IdDesc : CoachSortState.IdAsc;
-//            ViewData["SurnameSort"] = sortOrder == CoachSortState.SurnameAsc ? CoachSortState.SurnameDesc : CoachSortState.SurnameAsc;
-//            ViewData["CountrySort"] = sortOrder == CoachSortState.CountryAsc ? CoachSortState.CountryDesc : CoachSortState.CountryAsc;
-//            ViewData["WorkExperienceSort"] = sortOrder == CoachSortState.WorkExperienceAsc ? CoachSortState.WorkExperienceDesc : CoachSortState.WorkExperienceAsc;
-
-//            IEnumerable<Coach> coaches = coachService.GetByParameters(surname, country, minWorkExperience, maxWorkExperience);
-
-//            CoachViewModel allCoaches = new CoachViewModel
-//            {
-//                coaches = coachService.GetSortCoachesByOrder(coaches, sortOrder),
-//                myCoachId = squadService.GetMyCoachIdByUserLogin(User.Identity.Name),
-
-//                filterCoachViewModel = new FilterCoachViewModel
-//                {
-//                    surname = surname,
-//                    country = country,
-//                    minWorkExperience = minWorkExperience,
-//                    maxWorkExperience = maxWorkExperience
-//                }
-//            };
-
-//            return View(allCoaches);
-//        }
-//    }
-//}
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -75,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using db_cp.DTO;
 using db_cp.ModelsBL;
 using db_cp.Models;
+using db_cp.Enums;
 using db_cp.Services;
 using System.Linq;
 using AutoMapper;
@@ -95,7 +27,8 @@ namespace db_cp.Controllers
         private IMapper mapper;
         private CoachConverters coachConverters;
 
-        public CoachController(ICoachService coachService, IMapper mapper, CoachConverters coachConverters)
+        public CoachController(ICoachService coachService, IMapper mapper,
+                               CoachConverters coachConverters)
         {
             this.coachService = coachService;
             this.mapper = mapper;
@@ -104,12 +37,85 @@ namespace db_cp.Controllers
 
         [EnableCors("MyPolicy")]
         [HttpGet]
-        public IActionResult GetAllCoaches(
-            [FromQuery] CoachBaseDto filter,
+        public IActionResult GetAll(
+            [FromQuery] CoachFilterDto filter,
             [FromQuery] CoachSortState? sortState
         )
         {
-            return Ok(mapper.Map<IEnumerable<CoachDto>>(coachService.GetAllCoaches(filter, sortState)));
+            return Ok(mapper.Map<IEnumerable<CoachDto>>(coachService.GetAll(filter, sortState)));
+        }
+
+        [HttpPost]
+        [ProducesResponseType(typeof(CoachDto), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
+        public IActionResult Add(CoachDto coachDto)
+        {
+            try
+            {
+                var addedCoach = coachService.Add(mapper.Map<CoachBL>(coachDto));
+                return Ok(mapper.Map<CoachDto>(addedCoach));
+            }
+            catch (Exception ex)
+            {
+                return Conflict(ex.Message);
+            }
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(CoachDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
+        public IActionResult Put(int id, CoachBaseDto coach)
+        {
+            try
+            {
+                var updatedCoach = coachService.Update(mapper.Map<CoachBL>(coach,
+                        o => o.AfterMap((src, dest) => dest.Id = id)));
+
+                return updatedCoach != null ? Ok(mapper.Map<CoachDto>(updatedCoach)) : NotFound();
+            }
+            catch (Exception ex)
+            {
+                return Conflict(ex.Message);
+            }
+        }
+
+        [HttpPatch("{id}")]
+        [ProducesResponseType(typeof(CoachDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
+        public IActionResult Patch(int id, CoachBaseDto coach)
+        {
+            try
+            {
+                var updatedCoach = coachService.Update(coachConverters.convertPatch(id, coach));
+                return updatedCoach != null ? Ok(mapper.Map<CoachDto>(updatedCoach)) : NotFound();
+            }
+            catch (Exception ex)
+            {
+                return Conflict(ex.Message);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(CoachDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        public IActionResult Delete(int id)
+        {
+            var deletedCoach = coachService.Delete(id);
+            return deletedCoach != null ? Ok(mapper.Map<CoachDto>(deletedCoach)) : NotFound();
+        }
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(CoachDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        public IActionResult GetById(int id)
+        {
+            var coach = coachService.GetByID(id);
+            return coach != null ? Ok(mapper.Map<CoachDto>(coach)) : NotFound();
         }
     }
 }

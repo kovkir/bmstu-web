@@ -1,48 +1,119 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading.Tasks;
-//using db_cp.ViewModels;
-//using db_cp.Interfaces;
-//using db_cp.Mocks;
-//using db_cp.Services;
-//using Microsoft.AspNetCore.Mvc;
-//using db_cp.Models;
-//using Microsoft.Extensions.Logging;
-//using System.Reflection;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using db_cp.DTO;
+using db_cp.ModelsBL;
+using db_cp.Models;
+using db_cp.Enums;
+using db_cp.Services;
+using System.Linq;
+using AutoMapper;
+using db_cp.ModelsConverters;
+using Microsoft.AspNetCore.Cors;
 
-//namespace db_cp.Controllers
-//{
-//    public class AgentController : Controller
-//    {
-//        IAgentService agentService;
-//        IPlayerService playerService;
-//        private readonly ILogger<AccountController> logger;
 
-//        public AgentController(IAgentService agentService,
-//                               IPlayerService playerService,
-//                               ILogger<AccountController> logger)
-//        {
-//            this.agentService = agentService;
-//            this.playerService = playerService;
-//            this.logger = logger;
-//        }
+namespace db_cp.Controllers
+{
+    [EnableCors("MyPolicy")]
+    [ApiController]
+    [Route("/api/v1/agents")]
+    public class AgentController : Controller
+    {
 
-//        public IActionResult GetAllAgents()
-//        {
-//            ViewBag.Title = "Agents";
+        private IAgentService agentService;
+        private IMapper mapper;
+        private AgentConverters agentConverters;
 
-//            logger.Log(LogLevel.Information, "user: {0}; method: {1}",
-//                User.Identity.Name,
-//                MethodBase.GetCurrentMethod().Name);
+        public AgentController(IAgentService agentService, IMapper mapper,
+                               AgentConverters agentConverters)
+        {
+            this.agentService = agentService;
+            this.mapper = mapper;
+            this.agentConverters = agentConverters;
+        }
 
-//            AgentViewModel allAgents = new AgentViewModel
-//            {
-//                agents = agentService.GetAll(),
-//                players = playerService.GetAll()
-//            };
+        [EnableCors("MyPolicy")]
+        [HttpGet]
+        public IActionResult GetAll(
+            [FromQuery] AgentSortState? sortState
+        )
+        {
+            return Ok(mapper.Map<IEnumerable<AgentDto>>(agentService.GetAll(sortState)));
+        }
 
-//            return View(allAgents);
-//        }
-//    }
-//}
+        [HttpPost]
+        [ProducesResponseType(typeof(AgentDto), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
+        public IActionResult Add(AgentDto agentDto)
+        {
+            try
+            {
+                var addedAgent = agentService.Add(mapper.Map<AgentBL>(agentDto));
+                return Ok(mapper.Map<AgentDto>(addedAgent));
+            }
+            catch (Exception ex)
+            {
+                return Conflict(ex.Message);
+            }
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(AgentDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
+        public IActionResult Put(int id, AgentBaseDto agent)
+        {
+            try
+            {
+                var updatedAgent = agentService.Update(mapper.Map<AgentBL>(agent,
+                        o => o.AfterMap((src, dest) => dest.Id = id)));
+
+                return updatedAgent != null ? Ok(mapper.Map<AgentDto>(updatedAgent)) : NotFound();
+            }
+            catch (Exception ex)
+            {
+                return Conflict(ex.Message);
+            }
+        }
+
+        [HttpPatch("{id}")]
+        [ProducesResponseType(typeof(AgentDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
+        public IActionResult Patch(int id, AgentBaseDto agent)
+        {
+            try
+            {
+                var updatedAgent = agentService.Update(agentConverters.convertPatch(id, agent));
+                return updatedAgent != null ? Ok(mapper.Map<AgentDto>(updatedAgent)) : NotFound();
+            }
+            catch (Exception ex)
+            {
+                return Conflict(ex.Message);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(AgentDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        public IActionResult Delete(int id)
+        {
+            var deletedAgent = agentService.Delete(id);
+            return deletedAgent != null ? Ok(mapper.Map<AgentDto>(deletedAgent)) : NotFound();
+        }
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(AgentDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        public IActionResult GetById(int id)
+        {
+            var agent = agentService.GetByID(id);
+            return agent != null ? Ok(mapper.Map<AgentDto>(agent)) : NotFound();
+        }
+    }
+}

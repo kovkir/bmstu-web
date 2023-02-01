@@ -11,4 +11,12 @@
     {
         public int Id { get; set; }
     }
+
+    public class CoachFilterDto
+    {
+        public string Surname { get; set; }
+        public string Country { get; set; }
+        public uint? MinWorkExperience { get; set; }
+        public uint? MaxWorkExperience { get; set; }
+    }
 }

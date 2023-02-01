@@ -15,12 +15,14 @@ namespace db_cp.Repository
             _appDBContext = appDBContext;
         }
 
-        public void Add(Club model)
+        public Club Add(Club model)
         {
             try
             {
                 _appDBContext.Club.Add(model);
                 _appDBContext.SaveChanges();
+
+                return GetByID(model.Id);
             }
             catch (Exception ex)
             {
@@ -29,7 +31,7 @@ namespace db_cp.Repository
             }
         }
 
-        public void Delete(int id)
+        public Club Delete(int id)
         {
             try
             {
@@ -40,11 +42,31 @@ namespace db_cp.Repository
                     _appDBContext.Club.Remove(club);
                     _appDBContext.SaveChanges();
                 }
+
+                return club;
             }
             catch (Exception ex)
             {
                 Console.Write(ex.Message);
                 throw new Exception("Ошибка при удалении клуба");
+            }
+        }
+
+        public Club Update(Club model)
+        {
+            try
+            {
+                var curModel = _appDBContext.Club.FirstOrDefault(elem => elem.Id == model.Id);
+
+                _appDBContext.Entry(curModel).CurrentValues.SetValues(model);
+                _appDBContext.SaveChanges();
+
+                return GetByID(model.Id);
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+                throw new Exception("Ошибка при обновлении клуба");
             }
         }
 
@@ -71,22 +93,6 @@ namespace db_cp.Repository
         public Club GetByName(string name)
         {
             return _appDBContext.Club.FirstOrDefault(elem => elem.Name == name);
-        }
-
-        public void Update(Club model)
-        {
-            try
-            {
-                var curModel = _appDBContext.Club.FirstOrDefault(elem => elem.Id == model.Id);
-                _appDBContext.Entry(curModel).CurrentValues.SetValues(model);
-
-                _appDBContext.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                Console.Write(ex.Message);
-                throw new Exception("Ошибка при обновлении клуба");
-            }
         }
     }
 }

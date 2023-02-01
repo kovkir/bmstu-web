@@ -1,4 +1,5 @@
-﻿using db_cp.DTO;
+﻿using System;
+using db_cp.DTO;
 using db_cp.ModelsBL;
 using db_cp.Services;
 
@@ -16,6 +17,9 @@ namespace db_cp.ModelsConverters
         public PlayerBL convertPatch(int id, PlayerBaseDto player)
         {
             var existedPlayer = playerService.GetByID(id);
+
+            //if (existedPlayer == null)
+            //    throw new Exception("Такого футболиста не существует");
 
             return new PlayerBL
             {

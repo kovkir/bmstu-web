@@ -1,10 +1,10 @@
 ﻿using System;
 using db_cp.Models;
+using db_cp.ModelsBL;
+using db_cp.Enums;
 using db_cp.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
-using db_cp.ViewModels;
-using db_cp.ModelsBL;
 using AutoMapper;
 using db_cp.Repository;
 using db_cp.DTO;
@@ -13,29 +13,27 @@ namespace db_cp.Services
 {
     public interface ISquadService
     {
-        void Add(Squad squad);
-        void Delete(Squad squad);
-        void Update(Squad squad);
+        SquadBL Add(SquadBL squad);
+        SquadBL Delete(int id);
+        SquadBL Update(SquadBL squad);
 
-        IEnumerable<Squad> GetAll();
-        Squad GetByID(int id);
-        Squad GetByName(string name);
+        SquadBL GetByID(int id);
+        SquadBL GetByName(string name);
 
-        IEnumerable<Squad> GetByRating(uint rating);
-        IEnumerable<Squad> GetSortSquadsByOrder(SquadSortState sortOrder);
+        IEnumerable<SquadBL> GetByRating(uint rating);
+        IEnumerable<SquadBL> GetAll(SquadSortState? sortOrder);
 
-        void AddSquadPlayer(int squadId, int playerId);
-        void DeleteSquadPlayer(int squadId, int playerId);
-        void DeleteAllSquadPlayer(int playerId);
+        void DeleteSquadPlayersByPlayerId(int playerId);
+        void DeleteSquadPlayersBySquadId(int squadId);
 
-        IEnumerable<SquadPlayer> GetAllSquadPlayer();
-        SquadPlayer GetSquadPlayer(int squadId, int playerId);
-
-        IEnumerable<Player> GetMyPlayersBySquadId(int squadId);
-        IEnumerable<Player> GetMyPlayersByUserLogin(string userLogin);
+        IEnumerable<PlayerBL> GetMyPlayersBySquadId(int squadId);
+        IEnumerable<PlayerBL> GetMyPlayersByUserLogin(string userLogin);
         int GetMyCoachIdByUserLogin(string userLogin);
 
-        Squad UpdateMySquad(IsUpdata isUpdate, int squadId, int playerId, int coachId);
+        SquadBL AddPlayerToMySquad(int squadId, int playerId);
+        SquadBL AddCoachToMySquad(int squadId, int coachId);
+        SquadBL DeletePlayerFromMySquad(int squadId, int playerId);
+        SquadBL DeleteCoachFromMySquad(int squadId, int coachId);
     }
 
     public class SquadService : ISquadService
@@ -43,18 +41,113 @@ namespace db_cp.Services
         private readonly ISquadRepository _squadRepository;
         private readonly ICoachRepository _coachRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
         public SquadService(ISquadRepository squadRepository,
                             ICoachRepository coachRepository,
-                            IUserRepository userRepository)
+                            IUserRepository userRepository,
+                            IMapper mapper)
         {
             _squadRepository = squadRepository;
             _coachRepository = coachRepository;
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
 
-        private bool IsExist(Squad squad)
+        public SquadBL Add(SquadBL squad)
+        {
+            if (IsExist(squad))
+                throw new Exception("Состав с таким названием уже существует");
+
+            return _mapper.Map<SquadBL>(_squadRepository.Add(_mapper.Map<Squad>(squad)));
+        }
+
+        public SquadBL Delete(int id)
+        {
+            return _mapper.Map<SquadBL>(_squadRepository.Delete(id));
+        }
+
+        public SquadBL Update(SquadBL squad)
+        {
+            if (IsNotExist(squad.Id))
+                return null;
+
+            if (IsExist(squad))
+                throw new Exception("Состав с таким названием уже существует");
+
+            return _mapper.Map<SquadBL>(_squadRepository.Update(_mapper.Map<Squad>(squad)));
+        }
+
+
+        public SquadBL GetByID(int id)
+        {
+            return _mapper.Map<SquadBL>(_squadRepository.GetByID(id));
+        }
+        
+        public SquadBL GetByName(string name)
+        {
+            return _mapper.Map<SquadBL>(_squadRepository.GetByName(name));
+        }
+
+        public IEnumerable<SquadBL> GetByRating(uint rating)
+        {
+            return _mapper.Map<IEnumerable<SquadBL>>(_squadRepository.GetByRating(rating));
+        }
+
+        public IEnumerable<SquadBL> GetAll(SquadSortState? sortState)
+        {
+            var squads = _mapper.Map<IEnumerable<SquadBL>>(_squadRepository.GetAll());
+
+            if (sortState != null)
+                squads = SortSquadsByOption(squads, sortState.Value);
+
+            return squads;
+        }
+
+
+        private IEnumerable<SquadBL> SortSquadsByOption(IEnumerable<SquadBL> squads, SquadSortState sortOrder)
+        {
+            IEnumerable<SquadBL> sortedSquads;
+
+            if (sortOrder == SquadSortState.IdDesc)
+            {
+                sortedSquads = squads.OrderByDescending(elem => elem.Id);
+            }
+            else if (sortOrder == SquadSortState.NameAsc)
+            {
+                sortedSquads = squads.OrderBy(elem => elem.Name);
+            }
+            else if (sortOrder == SquadSortState.NameDesc)
+            {
+                sortedSquads = squads.OrderByDescending(elem => elem.Name);
+            }
+            else if (sortOrder == SquadSortState.RatingAsc)
+            {
+                sortedSquads = squads.OrderBy(elem => elem.Rating);
+            }
+            else if (sortOrder == SquadSortState.RatingDesc)
+            {
+                sortedSquads = squads.OrderByDescending(elem => elem.Rating);
+            }
+            else if (sortOrder == SquadSortState.CoachSurnameAsc)
+            {
+                sortedSquads = squads.OrderBy(elem => _coachRepository.GetByID(elem.CoachId).Surname);
+            }
+            else if (sortOrder == SquadSortState.CoachSurnameDesc)
+            {
+                sortedSquads = squads.OrderByDescending(elem => _coachRepository.GetByID(elem.CoachId).Surname);
+            }
+            else
+            {
+                sortedSquads = squads.OrderBy(elem => elem.Id);
+            }
+
+            return sortedSquads;
+        }
+
+
+        private bool IsExist(SquadBL squad)
         {
             return _squadRepository.GetAll().FirstOrDefault(elem =>
                     elem.Name == squad.Name) != null;
@@ -65,140 +158,46 @@ namespace db_cp.Services
             return _squadRepository.GetByID(id) == null;
         }
 
-        public void Add(Squad squad)
+
+        public void DeleteSquadPlayersByPlayerId(int playerId)
         {
-            if (IsExist(squad))
-                throw new Exception("Состав с таким названием уже существует");
-
-            _squadRepository.Add(squad);
-        }
-
-        public void Delete(Squad squad)
-        {
-            if (IsNotExist(squad.Id))
-                throw new Exception("Такого состава не существует");
-
-            _squadRepository.Delete(squad.Id);
-        }
-
-        public IEnumerable<Squad> GetAll()
-        {
-            return _squadRepository.GetAll();
-        }
-
-        public Squad GetByID(int id)
-        {
-            return _squadRepository.GetByID(id);
-        }
-        
-        public Squad GetByName(string name)
-        {
-            return _squadRepository.GetByName(name);
-        }
-
-        public IEnumerable<Squad> GetByRating(uint rating)
-        {
-            return _squadRepository.GetByRating(rating);
-        }
-
-        public void Update(Squad squad)
-        {
-            if (IsNotExist(squad.Id))
-                throw new Exception("Такого состава не существует");
-
-            _squadRepository.Update(squad);
-        }
-
-
-        public IEnumerable<Squad> GetSortSquadsByOrder(SquadSortState sortOrder)
-        {
-            IEnumerable<Squad> coaches = sortOrder switch
-            {
-                SquadSortState.IdDesc => _squadRepository.GetAll().OrderByDescending(elem => elem.Id),
-
-                SquadSortState.CoachSurnameAsc => _squadRepository.GetAll().OrderBy(elem => _coachRepository.GetByID(elem.CoachId).Surname),
-                SquadSortState.CoachSurnameDesc => _squadRepository.GetAll().OrderByDescending(elem => _coachRepository.GetByID(elem.CoachId).Surname),
-
-                SquadSortState.NameAsc => _squadRepository.GetAll().OrderBy(elem => elem.Name),
-                SquadSortState.NameDesc => _squadRepository.GetAll().OrderByDescending(elem => elem.Name),
-
-                SquadSortState.RatingAsc => _squadRepository.GetAll().OrderBy(elem => elem.Rating),
-                SquadSortState.RatingDesc => _squadRepository.GetAll().OrderByDescending(elem => elem.Rating),
-
-                _ => _squadRepository.GetAll().OrderBy(elem => elem.Id)
-            };
-
-            return coaches;
-        }
-
-
-        private bool SquadPlayerIsExist(int squadId, int playerId)
-        {
-            return _squadRepository.GetAllSquadPlayer().FirstOrDefault(elem =>
-                    elem.SquadId == squadId &&
-                    elem.PlayerId == playerId) != null;
-        }
-
-        private bool SquadPlayerIsNotExist(int squadId, int playerId)
-        {
-            return _squadRepository.GetSquadPlayer(squadId, playerId) == null;
-        }
-
-
-        public void AddSquadPlayer(int squadId, int playerId)
-        {
-            if (SquadPlayerIsExist(squadId, playerId))
-                throw new Exception("Данный футболист уже добавлен в состав");
-
-            _squadRepository.AddSquadPlayer(squadId, playerId);
-        }
-
-        public void DeleteSquadPlayer(int squadId, int playerId)
-        {
-            if (SquadPlayerIsNotExist(squadId, playerId))
-                throw new Exception("Такого футболиста в составе нет");
-
-            _squadRepository.DeleteSquadPlayer(squadId, playerId);
-        }
-
-        public void DeleteAllSquadPlayer(int playerId)
-        {
-            //_squadRepository.DeleteAllSquadPlayer(playerId);
-
-            IEnumerable<SquadPlayer> squadPlayerList = _squadRepository.GetAllSquadPlayer().Where(elem => elem.PlayerId == playerId);
+            var squadPlayerList = _squadRepository.GetAllSquadPlayer()
+                .Where(elem => elem.PlayerId == playerId);
 
             foreach (SquadPlayer elem in squadPlayerList)
             {
-                UpdateMySquad(IsUpdata.PlayerIsDeleted, elem.SquadId, playerId);
+                DeletePlayerFromMySquad(elem.SquadId, playerId);
             }
         }
 
-        public IEnumerable<SquadPlayer> GetAllSquadPlayer()
+        public void DeleteSquadPlayersBySquadId(int squadId)
         {
-            return _squadRepository.GetAllSquadPlayer();
+            var squadPlayerList = _squadRepository.GetAllSquadPlayer()
+                .Where(elem => elem.SquadId == squadId);
+
+            foreach (SquadPlayer elem in squadPlayerList)
+            {
+                DeletePlayerFromMySquad(squadId, elem.PlayerId);
+            }
         }
 
-        public SquadPlayer GetSquadPlayer(int squadId, int playerId)
+
+        public IEnumerable<PlayerBL> GetMyPlayersBySquadId(int squadId)
         {
-            return _squadRepository.GetSquadPlayer(squadId, playerId);
+            return _mapper.Map<IEnumerable<PlayerBL>>(_squadRepository.GetMyPlayersBySquadId(squadId));
         }
 
-        public IEnumerable<Player> GetMyPlayersBySquadId(int squadId)
-        {
-            return _squadRepository.GetMyPlayersBySquadId(squadId);
-        }
-
-        public IEnumerable<Player> GetMyPlayersByUserLogin(string userLogin)
+        public IEnumerable<PlayerBL> GetMyPlayersByUserLogin(string userLogin)
         {
             User user = _userRepository.GetByLogin(userLogin);
             IEnumerable<Player> myPlayers;
 
             if (user == null)
-                myPlayers = null;
+                myPlayers = Enumerable.Empty<Player>();
             else
                 myPlayers = _squadRepository.GetMyPlayersBySquadId(user.Id);
 
-            return myPlayers;
+            return _mapper.Map<IEnumerable<PlayerBL>>(myPlayers);
         }
 
         public int GetMyCoachIdByUserLogin(string userLogin)
@@ -215,27 +214,50 @@ namespace db_cp.Services
         }
 
 
-        private void AddPlayerToMySquad(int squadId, int playerId)
+        public SquadBL AddPlayerToMySquad(int squadId, int playerId)
         {
+            if (SquadPlayerIsExist(squadId, playerId))
+                throw new Exception("Данный футболист уже добавлен в состав");
+
             _squadRepository.AddSquadPlayer(squadId, playerId);
+
+            return UpdateMySquadRating(squadId);
         }
 
-        private void AddCoachToMySquad(Squad squad, int coachId)
+        public SquadBL AddCoachToMySquad(int squadId, int coachId)
         {
+            Squad squad = _squadRepository.GetByID(squadId);
+
+            if (squad == null)
+                throw new Exception("Такого состава не существует");
+
             squad.CoachId = coachId;
-            _squadRepository.Update(squad);
+
+            return _mapper.Map<SquadBL>(_squadRepository.Update(squad));
         }
 
-        private void DeletePlayerFromMySquad(int squadId, int playerId)
+        public SquadBL DeletePlayerFromMySquad(int squadId, int playerId)
         {
+            if (SquadPlayerIsNotExist(squadId, playerId))
+                throw new Exception("Такого футболиста в составе нет");
+
             _squadRepository.DeleteSquadPlayer(squadId, playerId);
+
+            return UpdateMySquadRating(squadId);
         }
 
-        private void DeleteCoachFromMySquad(Squad squad, int coachId)
+        public SquadBL DeleteCoachFromMySquad(int squadId, int coachId)
         {
+            Squad squad = _squadRepository.GetByID(squadId);
+
+            if (squad == null)
+                throw new Exception("Такого состава не существует");
+
             squad.CoachId = 0;
-            _squadRepository.Update(squad);
+
+            return _mapper.Map<SquadBL>(_squadRepository.Update(squad));
         }
+
 
         private uint SumRating(IEnumerable<Player> players)
         {
@@ -247,9 +269,10 @@ namespace db_cp.Services
             return sumRating;
         }
 
-        private void UpdateMySquadRating(Squad squad)
+        private SquadBL UpdateMySquadRating(int squadId)
         {
-            IEnumerable<Player> players = _squadRepository.GetMyPlayersBySquadId(squad.Id);
+            Squad squad = _squadRepository.GetByID(squadId);
+            IEnumerable<Player> players = _squadRepository.GetMyPlayersBySquadId(squadId);
 
             int numbPlayers = players.Count();
             uint newRating = 0;
@@ -258,53 +281,21 @@ namespace db_cp.Services
                 newRating = (uint)(SumRating(players) / numbPlayers);
 
             squad.Rating = newRating;
-            _squadRepository.Update(squad);
+
+            return _mapper.Map<SquadBL>(_squadRepository.Update(squad));
         }
 
-        public Squad UpdateMySquad(IsUpdata isUpdate, int squadId, int playerId = 0, int coachId = 0)
+
+        private bool SquadPlayerIsExist(int squadId, int playerId)
         {
-            Squad squad = _squadRepository.GetByID(squadId);
-
-            if (isUpdate == IsUpdata.PlayerIsAdded)
-            {
-                AddPlayerToMySquad(squad.Id, playerId);
-            }
-            else if (isUpdate == IsUpdata.CoachIsAdded)
-            {
-                AddCoachToMySquad(squad, coachId);
-            }
-            else if (isUpdate == IsUpdata.PlayerIsDeleted)
-            {
-                DeletePlayerFromMySquad(squad.Id, playerId);
-            }
-            else if (isUpdate == IsUpdata.CoachIsDeleted)
-            {
-                DeleteCoachFromMySquad(squad, coachId);
-            }
-
-            if (isUpdate != IsUpdata.IsNotUpdate)
-            {
-                UpdateMySquadRating(squad);
-            }
-
-            return _squadRepository.GetByID(squadId);
+            return _squadRepository.GetAllSquadPlayer().FirstOrDefault(elem =>
+                    elem.SquadId == squadId &&
+                    elem.PlayerId == playerId) != null;
         }
 
-
-        //public SquadBaseDto AddFavoriteServer(int userId, int serverId)
-        //{
-        //    FavoriteServer favoriteServer = new FavoriteServer
-        //    {
-        //        UserID = userId,
-        //        ServerID = serverId
-        //    };
-
-        //    serverService.UpdateServerRating(serverId, +1);
-        //    userRepository.AddFavoriteServer(favoriteServer);
-
-        //    return mapper.Map<FavoriteServerBL>(favoriteServer);
-        //}
-
-        //AddCoachToMySquad(squadId, coachId)
+        private bool SquadPlayerIsNotExist(int squadId, int playerId)
+        {
+            return _squadRepository.GetSquadPlayer(squadId, playerId) == null;
+        }
     }
 }

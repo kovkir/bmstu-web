@@ -1,62 +1,4 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading.Tasks;
-//using db_cp.ViewModels;
-//using db_cp.Interfaces;
-//using db_cp.Mocks;
-//using db_cp.Services;
-//using Microsoft.AspNetCore.Mvc;
-//using db_cp.Models;
-//using Microsoft.Extensions.Logging;
-//using System.Reflection;
-
-//namespace db_cp.Controllers
-//{
-//    public class SquadController : Controller
-//    {
-//        //static private ISquadRepository squadRepository = new SquadMock();
-//        //private ICoachService coachService = new CoachService(coachRepository);
-
-//        private ISquadService squadService;
-//        private ICoachService coachService;
-//        private readonly ILogger<AccountController> logger;
-
-//        public SquadController(ISquadService squadService,
-//                               ICoachService coachService,
-//                               ILogger<AccountController> logger)
-//        {
-//            this.squadService = squadService;
-//            this.coachService = coachService;
-//            this.logger = logger;
-//        }
-
-//        public IActionResult GetAllSquads(SquadSortState sortOrder = SquadSortState.IdAsc)
-//        {
-//            ViewBag.Title = "Squads";
-
-//            logger.Log(LogLevel.Information, "user: {0}; method: {1}",
-//                User.Identity.Name,
-//                MethodBase.GetCurrentMethod().Name);
-
-//            ViewData["IdSort"]           = sortOrder == SquadSortState.IdAsc           ? SquadSortState.IdDesc           : SquadSortState.IdAsc;
-//            ViewData["CoachSurnameSort"] = sortOrder == SquadSortState.CoachSurnameAsc ? SquadSortState.CoachSurnameDesc : SquadSortState.CoachSurnameAsc;
-//            ViewData["NameSort"]         = sortOrder == SquadSortState.NameAsc         ? SquadSortState.NameDesc         : SquadSortState.NameAsc;
-//            ViewData["RatingSort"]       = sortOrder == SquadSortState.RatingAsc       ? SquadSortState.RatingDesc       : SquadSortState.RatingAsc;
-
-//            var allSquads = new SquadViewModel
-//            {
-//                coaches = coachService.GetAll(),
-//                squads = squadService.GetSortSquadsByOrder(sortOrder)
-//            };
-
-//            return View(allSquads);
-//        }
-//    }
-//}
-
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -64,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using db_cp.DTO;
 using db_cp.ModelsBL;
 using db_cp.Models;
+using db_cp.Enums;
 using db_cp.Services;
 using System.Linq;
 using AutoMapper;
@@ -79,17 +22,180 @@ namespace db_cp.Controllers
     public class SquadController : Controller
     {
         private readonly ISquadService squadService;
+        private readonly IPlayerService playerService;
         private readonly ICoachService coachService;
         private readonly IMapper mapper;
         private readonly SquadConverters squadConverters;
 
-        public SquadController(ISquadService squadService, ICoachService coachService,
-                               IMapper mapper, SquadConverters squadConverters)
+        public SquadController(ISquadService squadService, IPlayerService playerService,
+                               ICoachService coachService, IMapper mapper,
+                               SquadConverters squadConverters)
         {
             this.squadService = squadService;
+            this.playerService = playerService;
             this.coachService = coachService;
             this.mapper = mapper;
             this.squadConverters = squadConverters;
+        }
+
+        [EnableCors("MyPolicy")]
+        [HttpGet]
+        public IActionResult GetAll(
+            [FromQuery] SquadSortState? sortState
+        )
+        {
+            return Ok(mapper.Map<IEnumerable<SquadDto>>(squadService.GetAll(sortState)));
+        }
+
+        [HttpPost]
+        [ProducesResponseType(typeof(SquadDto), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
+        public IActionResult Add(SquadDto squadDto)
+        {
+            try
+            {
+                var addedSquad = squadService.Add(mapper.Map<SquadBL>(squadDto));
+                return Ok(mapper.Map<SquadDto>(addedSquad));
+            }
+            catch (Exception ex)
+            {
+                return Conflict(ex.Message);
+            }
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(SquadDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
+        public IActionResult Put(int id, SquadBaseDto squad)
+        {
+            try
+            {
+                var updatedSquad = squadService.Update(mapper.Map<SquadBL>(squad,
+                        o => o.AfterMap((src, dest) => dest.Id = id)));
+
+                return updatedSquad != null ? Ok(mapper.Map<SquadDto>(updatedSquad)) : NotFound();
+            }
+            catch (Exception ex)
+            {
+                return Conflict(ex.Message);
+            }
+        }
+
+        [HttpPatch("{id}")]
+        [ProducesResponseType(typeof(SquadDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
+        public IActionResult Patch(int id, SquadBaseDto squad)
+        {
+            try
+            {
+                var updatedSquad = squadService.Update(squadConverters.convertPatch(id, squad));
+                return updatedSquad != null ? Ok(mapper.Map<SquadDto>(updatedSquad)) : NotFound();
+            }
+            catch (Exception ex)
+            {
+                return Conflict(ex.Message);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(SquadDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        public IActionResult Delete(int id)
+        {
+            var deletedSquad = squadService.Delete(id);
+            squadService.DeleteSquadPlayersBySquadId(id);
+
+            return deletedSquad != null ? Ok(mapper.Map<SquadDto>(deletedSquad)) : NotFound();
+        }
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(SquadDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        public IActionResult GetById(int id)
+        {
+            var squad = squadService.GetByID(id);
+            return squad != null ? Ok(mapper.Map<SquadDto>(squad)) : NotFound();
+        }
+
+        [HttpGet("{squadId}/myplayers")]
+        public IActionResult GetPlayersBySquadId(
+            int squadId,
+            [FromQuery] PlayerFilterDto filter,
+            [FromQuery] PlayerSortState? sortState
+        )
+        {
+            return Ok(mapper.Map<IEnumerable<PlayerDto>>(playerService.GetPlayersBySquadId(squadId, filter, sortState)));
+        }
+
+        [HttpGet("{squadId}/mycoach")]
+        public IActionResult GetCoachBySquadId(int squadId)
+        {
+            return Ok(mapper.Map<IEnumerable<CoachDto>>(coachService.GetCoachBySquadId(squadId)));
+        }
+
+        [HttpPost("{squadId}/myplayers/{playerId}")]
+        [ProducesResponseType(typeof(SquadDto), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
+        public IActionResult AddPlayerToSquad(int squadId, int playerId)
+        {
+            try
+            {
+                return Ok(mapper.Map<SquadDto>(squadService.AddPlayerToMySquad(squadId, playerId)));
+            }
+            catch (Exception ex)
+            {
+                return Conflict(ex.Message);
+            }
+        }
+
+        [HttpPost("{squadId}/mycoach/{coachId}")]
+        [ProducesResponseType(typeof(SquadDto), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
+        public IActionResult AddCoachToSquad(int squadId, int coachId)
+        {
+            try
+            {
+                return Ok(mapper.Map<SquadDto>(squadService.AddCoachToMySquad(squadId, coachId)));
+            }
+            catch (Exception ex)
+            {
+                return Conflict(ex.Message);
+            }
+        }
+
+        [HttpDelete("{squadId}/myplayers/{playerId}")]
+        [ProducesResponseType(typeof(SquadDto), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
+        public IActionResult DeletePlayerFromSquad(int squadId, int playerId)
+        {
+            try
+            {
+                return Ok(mapper.Map<SquadDto>(squadService.DeletePlayerFromMySquad(squadId, playerId)));
+            }
+            catch (Exception ex)
+            {
+                return Conflict(ex.Message);
+            }
+        }
+
+        [HttpDelete("{squadId}/mycoach/{coachId}")]
+        [ProducesResponseType(typeof(SquadDto), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
+        public IActionResult DeleteCoachFromSquad(int squadId, int coachId)
+        {
+            try
+            {
+                return Ok(mapper.Map<SquadDto>(squadService.DeletePlayerFromMySquad(squadId, coachId)));
+            }
+            catch (Exception ex)
+            {
+                return Conflict(ex.Message);
+            }
         }
     }
 }

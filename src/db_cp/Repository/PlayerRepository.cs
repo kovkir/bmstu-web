@@ -15,12 +15,14 @@ namespace db_cp.Repository
             _appDBContext = appDBContext;
         }
 
-        public void Add(Player model)
+        public Player Add(Player model)
         {
             try
             {
                 _appDBContext.Player.Add(model);
                 _appDBContext.SaveChanges();
+
+                return GetByID(model.Id);
             }
             catch (Exception ex)
             {
@@ -29,7 +31,7 @@ namespace db_cp.Repository
             }
         }
 
-        public void Delete(int id)
+        public Player Delete(int id)
         {
             try
             {
@@ -40,11 +42,31 @@ namespace db_cp.Repository
                     _appDBContext.Player.Remove(player);
                     _appDBContext.SaveChanges();
                 }
+
+                return player;
             }
             catch (Exception ex)
             {
                 Console.Write(ex.Message);
                 throw new Exception("Ошибка при удалении игрока");
+            }
+        }
+
+        public Player Update(Player model)
+        {
+            try
+            {
+                var curModel = _appDBContext.Player.FirstOrDefault(elem => elem.Id == model.Id);
+
+                _appDBContext.Entry(curModel).CurrentValues.SetValues(model);
+                _appDBContext.SaveChanges();
+
+                return GetByID(model.Id);
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+                throw new Exception("Ошибка при обновлении игрока");
             }
         }
 
@@ -76,22 +98,6 @@ namespace db_cp.Repository
         public IEnumerable<Player> GetBySurname(string surname)
         {
             return _appDBContext.Player.Where(elem => elem.Surname == surname).ToList();
-        }
-
-        public void Update(Player model)
-        {
-            try
-            {
-                var curModel = _appDBContext.Player.FirstOrDefault(elem => elem.Id == model.Id);
-                _appDBContext.Entry(curModel).CurrentValues.SetValues(model);
-
-                _appDBContext.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                Console.Write(ex.Message);
-                throw new Exception("Ошибка при обновлении игрока");
-            }
         }
     }
 }

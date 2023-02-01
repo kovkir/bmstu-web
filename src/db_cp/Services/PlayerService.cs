@@ -1,37 +1,33 @@
 ﻿using System;
 using db_cp.Models;
 using db_cp.ModelsBL;
+using db_cp.Enums;
 using db_cp.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using db_cp.DTO;
 using db_cp.Repository;
+using Microsoft.Build.Tasks;
 
 namespace db_cp.Services
 {
     public interface IPlayerService
     {
-        void Add(Player player);
-        void Delete(Player player);
-        void Update(Player player);
+        PlayerBL Add(PlayerBL player);
+        PlayerBL Delete(int id);
+        PlayerBL Update(PlayerBL player);
 
-        IEnumerable<Player> GetAll();
-        Player GetByID(int id);
+        PlayerBL GetByID(int id);
 
-        IEnumerable<Player> GetBySurname(string surname);
-        IEnumerable<Player> GetByRating(uint rating);
-        IEnumerable<Player> GetByCountry(string country);
-        IEnumerable<Player> GetByPrice(uint minPrice, uint maxPrice);
-        IEnumerable<Player> GetByClubName(string clubName);
-        IEnumerable<Player> GetByParameters(string surname, string country, string clubName,
-                                            uint minPrice = 0, uint maxPrice = 0,
-                                            uint minRating = 0, uint maxRating = 0,
-                                            int squadId = 0);
+        IEnumerable<PlayerBL> GetBySurname(string surname);
+        IEnumerable<PlayerBL> GetByRating(uint rating);
+        IEnumerable<PlayerBL> GetByCountry(string country);
+        IEnumerable<PlayerBL> GetByPrice(uint minPrice, uint maxPrice);
+        IEnumerable<PlayerBL> GetByClubName(string clubName);
 
-        IEnumerable<Player> GetSortPlayersByOrder(IEnumerable<Player> players, PlayerSortState sortOrder);
-
-        PlayerBL AddPlayer(PlayerBL player);
+        IEnumerable<PlayerBL> GetAll(PlayerFilterDto filter, PlayerSortState? sortState);
+        IEnumerable<PlayerBL> GetPlayersBySquadId(int squadId, PlayerFilterDto filter, PlayerSortState? sortState);
     }
 
     public class PlayerService : IPlayerService
@@ -53,159 +49,184 @@ namespace db_cp.Services
         }
 
 
-        private bool IsExist(Player player)
-        {
-            return _playerRepository.GetAll().FirstOrDefault(elem =>
-                    elem.Surname == player.Surname &&
-                    elem.ClubId  == player.ClubId  &&
-                    elem.Country == player.Country &&
-                    elem.Rating  == player.Rating) != null;
-        }
-
-        private bool IsNotExist(int id)
-        {
-            return _playerRepository.GetByID(id) == null;
-        }
-
-        public void Add(Player player)
+        public PlayerBL Add(PlayerBL player)
         {
             if (IsExist(player))
                 throw new Exception("Такой футболист уже существует");
 
-            _playerRepository.Add(player);
+            return _mapper.Map<PlayerBL>(_playerRepository.Add(_mapper.Map<Player>(player)));
         }
 
-        public void Delete(Player player)
+        public PlayerBL Delete(int id)
+        {
+            return _mapper.Map<PlayerBL>(_playerRepository.Delete(id));
+        }
+
+        public PlayerBL Update(PlayerBL player)
         {
             if (IsNotExist(player.Id))
-                throw new Exception("Такого футболиста не существует");
+                return null;
 
-            _playerRepository.Delete(player.Id);
+            if (IsExist(player))
+                throw new Exception("Такой футболист уже существует");
+
+            return _mapper.Map<PlayerBL>(_playerRepository.Update(_mapper.Map<Player>(player)));
         }
 
-        public IEnumerable<Player> GetAll()
+
+        public PlayerBL GetByID(int id)
         {
-            return _playerRepository.GetAll();
+            return _mapper.Map<PlayerBL>(_playerRepository.GetByID(id));
         }
 
-        public IEnumerable<Player> GetByCountry(string country)
+        public IEnumerable<PlayerBL> GetByCountry(string country)
         {
-            return _playerRepository.GetByCountry(country);
+            return _mapper.Map<IEnumerable<PlayerBL>>(_playerRepository.GetByCountry(country));
         }
 
-        public Player GetByID(int id)
+        public IEnumerable<PlayerBL> GetByPrice(uint minPrice, uint maxPrice)
         {
-            return _playerRepository.GetByID(id);
+            return _mapper.Map<IEnumerable<PlayerBL>>(_playerRepository.GetByPrice(minPrice, maxPrice));
         }
 
-        public IEnumerable<Player> GetByPrice(uint minPrice, uint maxPrice)
+        public IEnumerable<PlayerBL> GetByRating(uint rating)
         {
-            return _playerRepository.GetByPrice(minPrice, maxPrice);
+            return _mapper.Map<IEnumerable<PlayerBL>>(_playerRepository.GetByRating(rating));
         }
 
-        public IEnumerable<Player> GetByRating(uint rating)
+        public IEnumerable<PlayerBL> GetBySurname(string surname)
         {
-            return _playerRepository.GetByRating(rating);
+            return _mapper.Map<IEnumerable<PlayerBL>>(_playerRepository.GetBySurname(surname));
         }
 
-        public IEnumerable<Player> GetBySurname(string surname)
-        {
-            return _playerRepository.GetBySurname(surname);
-        }
-
-        public IEnumerable<Player> GetByClubName(string clubName)
+        public IEnumerable<PlayerBL> GetByClubName(string clubName)
         {
             Club club = _clubRepository.GetByName(clubName);
 
             if (club == null)
-                return null;
+                return Enumerable.Empty<PlayerBL>();
             else
-                return _playerRepository.GetAll().Where(elem => elem.ClubId == club.Id);
+                return _mapper.Map<IEnumerable<PlayerBL>>(_playerRepository.GetAll().Where(elem => elem.ClubId == club.Id));
         }
 
-        public void Update(Player player)
+        public IEnumerable<PlayerBL> GetAll(PlayerFilterDto filter, PlayerSortState? sortState)
         {
-            if (IsNotExist(player.Id))
-                throw new Exception("Такого футболиста не существует");
+            var players = _mapper.Map<IEnumerable<PlayerBL>>(_playerRepository.GetAll());
 
-            _playerRepository.Update(player);
+            players = FilterPlayers(players, filter);
+
+            if (sortState != null)
+                players = SortPlayersByOption(players, sortState.Value);
+
+            return players;
         }
 
-
-        public IEnumerable<Player> GetSortPlayersByOrder(IEnumerable<Player> players, PlayerSortState sortOrder)
+        public IEnumerable<PlayerBL> GetPlayersBySquadId(int squadId, PlayerFilterDto filter, PlayerSortState? sortState)
         {
-            IEnumerable<Player> needPlayers = sortOrder switch
-            {
-                PlayerSortState.IdDesc => players.OrderByDescending(elem => elem.Id),
+            var players = _mapper.Map<IEnumerable<PlayerBL>>(_squadRepository.GetMyPlayersBySquadId(squadId));
 
-                PlayerSortState.SurnameAsc => players.OrderBy(elem => elem.Surname),
-                PlayerSortState.SurnameDesc => players.OrderByDescending(elem => elem.Surname),
+            players = FilterPlayers(players, filter);
 
-                PlayerSortState.RatingAsc => players.OrderBy(elem => elem.Rating),
-                PlayerSortState.RatingDesc => players.OrderByDescending(elem => elem.Rating),
-
-                PlayerSortState.CountryAsc => players.OrderBy(elem => elem.Country),
-                PlayerSortState.CountryDesc => players.OrderByDescending(elem => elem.Country),
-
-                PlayerSortState.ClubNameAsc => players.OrderBy(elem => _clubRepository.GetByID(elem.ClubId).Name),
-                PlayerSortState.ClubNameDesc => players.OrderByDescending(elem => _clubRepository.GetByID(elem.ClubId).Name),
-
-                PlayerSortState.PriceAsc => players.OrderBy(elem => elem.Price),
-                PlayerSortState.PriceDesc => players.OrderByDescending(elem => elem.Price),
-
-                _ => players.OrderBy(elem => elem.Id)
-            };
-
-            return needPlayers;
-        }
-
-
-        public IEnumerable<Player> GetByParameters(string surname, string country, string clubName,
-                                                   uint minPrice, uint maxPrice, uint minRating, uint maxRating,
-                                                   int squadId)
-        {
-            IEnumerable<Player> players;
-
-            if (squadId != 0)
-                players = _squadRepository.GetMyPlayersBySquadId(squadId);
-            else
-                players = _playerRepository.GetAll();
-
-            if (players.Count() != 0 && surname != null)
-                players = players.Where(elem => elem.Surname == surname);
-
-            if (players.Count() != 0 && country != null)
-                players = players.Where(elem => elem.Country == country);
-
-            if (players.Count() != 0 && minRating != 0)
-                players = players.Where(elem => elem.Rating >= minRating);
-
-            if (players.Count() != 0 && maxRating != 0)
-                players = players.Where(elem => elem.Rating <= maxRating);
-
-            if (players.Count() != 0 && minPrice != 0)
-                players = players.Where(elem => elem.Price >= minPrice);
-
-            if (players.Count() != 0 && maxPrice != 0)
-                players = players.Where(elem => elem.Price <= maxPrice);
-
-            if (players.Count() != 0 && clubName != null)
-            {
-                Club club = _clubRepository.GetByName(clubName);
-
-                if (club == null)
-                    players = Enumerable.Empty<Player>();
-                else
-                    players = players.Where(elem => elem.ClubId == club.Id);
-            }
+            if (sortState != null)
+                players = SortPlayersByOption(players, sortState.Value);
 
             return players;
         }
 
 
+        private IEnumerable<PlayerBL> FilterPlayers(IEnumerable<PlayerBL> players, PlayerFilterDto filter)
+        {
+            var filteredPlayers = players;
+
+            if (filter.MinPrice != null)
+                filteredPlayers = filteredPlayers.Where(elem => elem.Price >= filter.MinPrice);
+
+            if (filter.MaxPrice != null)
+                filteredPlayers = filteredPlayers.Where(elem => elem.Price <= filter.MaxPrice);
+
+            if (filter.MinRating != null)
+                filteredPlayers = filteredPlayers.Where(elem => elem.Rating >= filter.MinRating);
+
+            if (filter.MaxRating != null)
+                filteredPlayers = filteredPlayers.Where(elem => elem.Rating <= filter.MaxRating);
+
+            if (!String.IsNullOrEmpty(filter.Country))
+                filteredPlayers = filteredPlayers.Where(elem => elem.Country.Contains(filter.Country));
+
+            if (!String.IsNullOrEmpty(filter.Surname))
+                filteredPlayers = filteredPlayers.Where(elem => elem.Surname.Contains(filter.Surname));
+
+            if (!String.IsNullOrEmpty(filter.ClubName))
+            {
+                Club club = _clubRepository.GetByName(filter.ClubName);
+
+                if (club == null)
+                    filteredPlayers = Enumerable.Empty<PlayerBL>();
+                else
+                    filteredPlayers = filteredPlayers.Where(elem => elem.ClubId == club.Id);
+            }
+
+            return filteredPlayers;
+        }
+
+        private IEnumerable<PlayerBL> SortPlayersByOption(IEnumerable<PlayerBL> players, PlayerSortState sortOrder)
+        {
+            IEnumerable<PlayerBL> sortedPlayers;
+
+            if (sortOrder == PlayerSortState.IdDesc)
+            {
+                sortedPlayers = players.OrderByDescending(elem => elem.Id);
+            }
+            else if (sortOrder == PlayerSortState.SurnameAsc)
+            {
+                sortedPlayers = players.OrderBy(elem => elem.Surname);
+            }
+            else if (sortOrder == PlayerSortState.SurnameDesc)
+            {
+                sortedPlayers = players.OrderByDescending(elem => elem.Surname);
+            }
+            else if (sortOrder == PlayerSortState.CountryAsc)
+            {
+                sortedPlayers = players.OrderBy(elem => elem.Country);
+            }
+            else if (sortOrder == PlayerSortState.CountryDesc)
+            {
+                sortedPlayers = players.OrderByDescending(elem => elem.Country);
+            }
+            else if (sortOrder == PlayerSortState.RatingAsc)
+            {
+                sortedPlayers = players.OrderBy(elem => elem.Rating);
+            }
+            else if (sortOrder == PlayerSortState.RatingDesc)
+            {
+                sortedPlayers = players.OrderByDescending(elem => elem.Rating);
+            }
+            else if (sortOrder == PlayerSortState.PriceAsc)
+            {
+                sortedPlayers = players.OrderBy(elem => elem.Price);
+            }
+            else if (sortOrder == PlayerSortState.PriceDesc)
+            {
+                sortedPlayers = players.OrderByDescending(elem => elem.Price);
+            }
+            else if (sortOrder == PlayerSortState.ClubNameAsc)
+            {
+                sortedPlayers = players.OrderBy(elem => _clubRepository.GetByID(elem.ClubId).Name);
+            }
+            else if (sortOrder == PlayerSortState.ClubNameDesc)
+            {
+                sortedPlayers = players.OrderByDescending(elem => _clubRepository.GetByID(elem.ClubId).Name);
+            }
+            else
+            {
+                sortedPlayers = players.OrderBy(elem => elem.Id);
+            }
+
+            return sortedPlayers;
+        }
 
 
-        private bool PlayerIsExist(PlayerBL player)
+        private bool IsExist(PlayerBL player)
         {
             return _playerRepository.GetAll().FirstOrDefault(elem =>
                     elem.Surname == player.Surname &&
@@ -214,14 +235,9 @@ namespace db_cp.Services
                     elem.Rating == player.Rating) != null;
         }
 
-        public PlayerBL AddPlayer(PlayerBL player)
+        private bool IsNotExist(int id)
         {
-            if (PlayerIsExist(player))
-                throw new Exception("Такой футболист уже существует");
-
-            _playerRepository.Add(_mapper.Map<Player>(player));
-
-            return player;
+            return _playerRepository.GetByID(id) == null;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace db_cp.Models
+﻿namespace db_cp.Enums
 {
     public enum PlayerSortState
     {
@@ -79,5 +79,20 @@
 
         RatingAsc,
         RatingDesc
+    }
+
+    public enum AgentSortState
+    {
+        IdAsc,
+        IdDesc,
+
+        PlayerSurnameAsc,
+        PlayerSurnameDesc,
+
+        SurnameAsc,
+        SurnameDesc,
+
+        CountryAsc,
+        CountryDesc
     }
 }

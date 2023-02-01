@@ -15,12 +15,14 @@ namespace db_cp.Repository
             _appDBContext = appDBContext;
         }
 
-        public void Add(Squad model)
+        public Squad Add(Squad model)
         {
             try
             {
                 _appDBContext.Squad.Add(model);
                 _appDBContext.SaveChanges();
+
+                return GetByID(model.Id);
             }
             catch (Exception ex)
             {
@@ -29,7 +31,7 @@ namespace db_cp.Repository
             }
         }
 
-        public void Delete(int id)
+        public Squad Delete(int id)
         {
             try
             {
@@ -40,11 +42,31 @@ namespace db_cp.Repository
                     _appDBContext.Squad.Remove(squad);
                     _appDBContext.SaveChanges();
                 }
+
+                return squad;
             }
             catch (Exception ex)
             {
                 Console.Write(ex.Message);
                 throw new Exception("Ошибка при удалении состава");
+            }
+        }
+
+        public Squad Update(Squad model)
+        {
+            try
+            {
+                var curModel = _appDBContext.Squad.FirstOrDefault(elem => elem.Id == model.Id);
+
+                _appDBContext.Entry(curModel).CurrentValues.SetValues(model);
+                _appDBContext.SaveChanges();
+
+                return GetByID(model.Id);
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+                throw new Exception("Ошибка при обновлении состава");
             }
         }
 
@@ -68,21 +90,6 @@ namespace db_cp.Repository
             return _appDBContext.Squad.Where(elem => elem.Rating == rating).ToList();
         }
 
-        public void Update(Squad model)
-        {
-            try
-            {
-                var curModel = _appDBContext.Squad.FirstOrDefault(elem => elem.Id == model.Id);
-                _appDBContext.Entry(curModel).CurrentValues.SetValues(model);
-
-                _appDBContext.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                Console.Write(ex.Message);
-                throw new Exception("Ошибка при обновлении состава");
-            }
-        }
 
         public void AddSquadPlayer(int squadId, int playerId)
         {
@@ -116,29 +123,6 @@ namespace db_cp.Repository
                 {
                     _appDBContext.SquadPlayer.Remove(squadPlayer);
                     _appDBContext.SaveChanges();
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.Write(ex.Message);
-                throw new Exception("Ошибка при удалении связи между игроком и составом");
-            }
-        }
-
-        public void DeleteAllSquadPlayer(int playerId)
-        {
-            try
-            {
-                SquadPlayer squadPlayer = _appDBContext.SquadPlayer
-                    .FirstOrDefault(elem => elem.PlayerId == playerId);
-
-                while (squadPlayer != null)
-                {
-                    _appDBContext.SquadPlayer.Remove(squadPlayer);
-                    _appDBContext.SaveChanges();
-
-                    squadPlayer = _appDBContext.SquadPlayer
-                        .FirstOrDefault(elem => elem.PlayerId == playerId);
                 }
             }
             catch (Exception ex)

@@ -15,12 +15,14 @@ namespace db_cp.Repository
             _appDBContext = appDBContext;
         }
 
-        public void Add(User model)
+        public User Add(User model)
         {
             try
             {
                 _appDBContext.User.Add(model);
                 _appDBContext.SaveChanges();
+
+                return GetByID(model.Id);
             }
             catch (Exception ex)
             {
@@ -29,7 +31,7 @@ namespace db_cp.Repository
             }
         }
 
-        public void Delete(int id)
+        public User Delete(int id)
         {
             try
             {
@@ -40,11 +42,31 @@ namespace db_cp.Repository
                     _appDBContext.User.Remove(user);
                     _appDBContext.SaveChanges();
                 }
+
+                return user;
             }
             catch (Exception ex)
             {
                 Console.Write(ex.Message);
                 throw new Exception("Ошибка при удалении пользователя");
+            }
+        }
+
+        public User Update(User model)
+        {
+            try
+            {
+                var curModel = _appDBContext.User.FirstOrDefault(elem => elem.Id == model.Id);
+
+                _appDBContext.Entry(curModel).CurrentValues.SetValues(model);
+                _appDBContext.SaveChanges();
+
+                return GetByID(model.Id);
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+                throw new Exception("Ошибка при обновлении пользователя");
             }
         }
 
@@ -66,22 +88,6 @@ namespace db_cp.Repository
         public IEnumerable<User> GetByPermission(string permission)
         {
             return _appDBContext.User.Where(elem => elem.Permission == permission).ToList();
-        }
-
-        public void Update(User model)
-        {
-            try
-            {
-                var curModel = _appDBContext.User.FirstOrDefault(elem => elem.Id == model.Id);
-                _appDBContext.Entry(curModel).CurrentValues.SetValues(model);
-
-                _appDBContext.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                Console.Write(ex.Message);
-                throw new Exception("Ошибка при обновлении пользователя");
-            }
         }
     }
 }

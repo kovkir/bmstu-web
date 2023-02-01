@@ -1,4 +1,6 @@
-﻿namespace db_cp.DTO
+﻿using db_cp.Models;
+
+namespace db_cp.DTO
 {
     public class SquadBaseDto
     {

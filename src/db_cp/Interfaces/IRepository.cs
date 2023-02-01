@@ -5,9 +5,9 @@ namespace db_cp.Interfaces
 {
     public interface IRepository<T>
     {
-        void Add(T model);
-        void Update(T model);
-        void Delete(int id);
+        T Add(T model);
+        T Update(T model);
+        T Delete(int id);
 
         IEnumerable<T> GetAll();
         T GetByID(int id);

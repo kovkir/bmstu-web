@@ -1,32 +1,28 @@
 ﻿using System;
 using db_cp.Models;
+using db_cp.ModelsBL;
+using db_cp.Enums;
 using db_cp.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using db_cp.DTO;
-using db_cp.ModelsBL;
 using db_cp.Repository;
 
 namespace db_cp.Services
 {
     public interface IUserService
     {
-        void Add(User user);
-        void Delete(User user);
-        void Update(User user);
+        UserBL Add(UserBL user);
+        UserBL Delete(int id);
+        UserBL Update(UserBL user);
 
-        IEnumerable<User> GetAll();
-        User GetByID(int id);
-        User GetByLogin(string login);
-
-        IEnumerable<User> GetByPermission(string permission);
-        IEnumerable<User> GetSortUsersByOrder(UserSortState sortOrder);
-
+        UserBL GetByID(int id);
+        UserBL GetByLogin(string login);
         UserBL Login(LoginDto loginDto);
-        UserBL AddUser(UserBL user);
-        UserBL GetUserByLogin(string login);
-        IEnumerable<UserBL> GetAllUsers();
+
+        IEnumerable<UserBL> GetByPermission(string permission);
+        IEnumerable<UserBL> GetAll(UserSortState? sortState);
     }
 
     public class UserService : IUserService
@@ -35,7 +31,9 @@ namespace db_cp.Services
         private readonly ISquadRepository _squadRepository;
         private readonly IMapper _mapper;
 
-        public UserService(IUserRepository userRepository, ISquadRepository squadRepository, IMapper mapper)
+        public UserService(IUserRepository userRepository,
+                           ISquadRepository squadRepository,
+                           IMapper mapper)
         {
             _userRepository = userRepository;
             _squadRepository = squadRepository;
@@ -43,116 +41,45 @@ namespace db_cp.Services
         }
 
 
-        private bool IsExist(User user)
-        {
-            return _userRepository.GetAll().FirstOrDefault(elem =>
-                    elem.Login == user.Login) != null;
-        }
-
-        private bool IsNotExist(int id)
-        {
-            return _userRepository.GetByID(id) == null;
-        }
-
-        public void Add(User user)
+        public UserBL Add(UserBL user)
         {
             if (IsExist(user))
                 throw new Exception("Пользователь с таким логином уже существует");
 
+            return _mapper.Map<UserBL>(_userRepository.Add(_mapper.Map<User>(user)));
 
-            _userRepository.Add(user);
         }
 
-        public void Delete(User user)
+        public UserBL Delete(int id)
+        {
+            return _mapper.Map<UserBL>(_userRepository.Delete(id));
+        }
+
+        public UserBL Update(UserBL user)
         {
             if (IsNotExist(user.Id))
-                throw new Exception("Такого пользователя не существует");
+                return null;
 
-            _userRepository.Delete(user.Id);
-        }
-
-        public IEnumerable<User> GetAll()
-        {
-            return _userRepository.GetAll();
-        }
-
-        public User GetByID(int id)
-        {
-            return _userRepository.GetByID(id);
-        }
-
-        public User GetByLogin(string login)
-        {
-            return _userRepository.GetByLogin(login);
-        }
-
-        public IEnumerable<User> GetByPermission(string permission)
-        {
-            return _userRepository.GetByPermission(permission);
-        }
-
-        public void Update(User user)
-        {
-            if (IsNotExist(user.Id))
-                throw new Exception("Такого пользователя не существует");
-
-            _userRepository.Update(user);
-        }
-
-
-        public IEnumerable<User> GetSortUsersByOrder(UserSortState sortOrder)
-        {
-            IEnumerable<User> users = sortOrder switch
-            {
-                UserSortState.IdDesc => _userRepository.GetAll().OrderByDescending(elem => elem.Id),
-
-                UserSortState.LoginAsc => _userRepository.GetAll().OrderBy(elem => elem.Login),
-                UserSortState.LoginDesc => _userRepository.GetAll().OrderByDescending(elem => elem.Login),
-
-                UserSortState.PermissionAsc => _userRepository.GetAll().OrderBy(elem => elem.Permission),
-                UserSortState.PermissionDesc => _userRepository.GetAll().OrderByDescending(elem => elem.Permission),
-
-                UserSortState.RatingSquadAsc => _userRepository.GetAll().OrderBy(elem => _squadRepository.GetByID(elem.Id).Rating),
-                UserSortState.RatingSquadDesc => _userRepository.GetAll().OrderByDescending(elem => _squadRepository.GetByID(elem.Id).Rating),
-
-                _ => _userRepository.GetAll().OrderBy(elem => elem.Id)
-            };
-
-            return users;
-        }
-
-
-
-
-        public IEnumerable<UserBL> GetAllUsers()
-        {
-            return _mapper.Map<IEnumerable<UserBL>>(_userRepository.GetAll());
-        }
-
-        private bool UserIsExist(UserBL user)
-        {
-            return _userRepository.GetAll().FirstOrDefault(elem =>
-                    elem.Login == user.Login) != null;
-        }
-
-        public UserBL AddUser(UserBL user)
-        {
-            if (UserIsExist(user))
+            if (IsExist(user))
                 throw new Exception("Пользователь с таким логином уже существует");
 
-            _userRepository.Add(_mapper.Map<User>(user));
-
-            return user;
+            return _mapper.Map<UserBL>(_userRepository.Update(_mapper.Map<User>(user)));
         }
 
-        public UserBL GetUserByLogin(string login)
+
+        public UserBL GetByID(int id)
+        {
+            return _mapper.Map<UserBL>(_userRepository.GetByID(id));
+        }
+
+        public UserBL GetByLogin(string login)
         {
             return _mapper.Map<UserBL>(_userRepository.GetByLogin(login));
         }
 
         public UserBL Login(LoginDto loginDto)
         {
-            UserBL user = GetUserByLogin(loginDto.Login);
+            UserBL user = GetByLogin(loginDto.Login);
 
             if (user == null)
                 return null;
@@ -161,6 +88,74 @@ namespace db_cp.Services
                 return user;
             else
                 return null;
+        }
+
+        public IEnumerable<UserBL> GetByPermission(string permission)
+        {
+            return _mapper.Map<IEnumerable<UserBL>>(_userRepository.GetByPermission(permission));
+        }
+
+        public IEnumerable<UserBL> GetAll(UserSortState? sortState)
+        {
+            var users = _mapper.Map<IEnumerable<UserBL>>(_userRepository.GetAll());
+
+            if (sortState != null)
+                users = SortUsersByOption(users, sortState.Value);
+
+            return users;
+        }
+
+
+        private IEnumerable<UserBL> SortUsersByOption(IEnumerable<UserBL> users, UserSortState sortOrder)
+        {
+            IEnumerable<UserBL> sortedUsers;
+
+            if (sortOrder == UserSortState.IdDesc)
+            {
+                sortedUsers = users.OrderByDescending(elem => elem.Id);
+            }
+            else if (sortOrder == UserSortState.LoginAsc)
+            {
+                sortedUsers = users.OrderBy(elem => elem.Login);
+            }
+            else if (sortOrder == UserSortState.LoginDesc)
+            {
+                sortedUsers = users.OrderByDescending(elem => elem.Login);
+            }
+            else if (sortOrder == UserSortState.PermissionAsc)
+            {
+                sortedUsers = users.OrderBy(elem => elem.Permission);
+            }
+            else if (sortOrder == UserSortState.PermissionDesc)
+            {
+                sortedUsers = users.OrderByDescending(elem => elem.Permission);
+            }
+            else if (sortOrder == UserSortState.RatingSquadAsc)
+            {
+                sortedUsers = users.OrderBy(elem => _squadRepository.GetByID(elem.Id).Rating);
+            }
+            else if (sortOrder == UserSortState.RatingSquadDesc)
+            {
+                sortedUsers = users.OrderByDescending(elem => _squadRepository.GetByID(elem.Id).Rating);
+            }
+            else
+            {
+                sortedUsers = users.OrderBy(elem => elem.Id);
+            }
+
+            return sortedUsers;
+        }
+
+
+        private bool IsExist(UserBL user)
+        {
+            return _userRepository.GetAll().FirstOrDefault(elem =>
+                    elem.Login == user.Login) != null;
+        }
+
+        private bool IsNotExist(int id)
+        {
+            return _userRepository.GetByID(id) == null;
         }
     }
 }

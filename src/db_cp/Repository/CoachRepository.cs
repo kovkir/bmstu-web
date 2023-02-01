@@ -15,12 +15,14 @@ namespace db_cp.Repository
             _appDBContext = appDBContext;
         }
 
-        public void Add(Coach model)
+        public Coach Add(Coach model)
         {
             try
             {
                 _appDBContext.Coach.Add(model);
                 _appDBContext.SaveChanges();
+
+                return GetByID(model.Id);
             }
             catch (Exception ex)
             {
@@ -29,7 +31,7 @@ namespace db_cp.Repository
             }
         }
 
-        public void Delete(int id)
+        public Coach Delete(int id)
         {
             try
             {
@@ -40,11 +42,31 @@ namespace db_cp.Repository
                     _appDBContext.Coach.Remove(coach);
                     _appDBContext.SaveChanges();
                 }
+
+                return coach;
             }
             catch (Exception ex)
             {
                 Console.Write(ex.Message);
                 throw new Exception("Ошибка при удалении тренера");
+            }
+        }
+
+        public Coach Update(Coach model)
+        {
+            try
+            {
+                var curModel = _appDBContext.Coach.FirstOrDefault(elem => elem.Id == model.Id);
+
+                _appDBContext.Entry(curModel).CurrentValues.SetValues(model);
+                _appDBContext.SaveChanges();
+
+                return GetByID(model.Id);
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+                throw new Exception("Ошибка при обновлении тренера");
             }
         }
 
@@ -71,22 +93,6 @@ namespace db_cp.Repository
         public IEnumerable<Coach> GetByWorkExperience(uint workExperience)
         {
             return _appDBContext.Coach.Where(elem => elem.WorkExperience == workExperience).ToList();
-        }
-
-        public void Update(Coach model)
-        {
-            try
-            {
-                var curModel = _appDBContext.Coach.FirstOrDefault(elem => elem.Id == model.Id);
-                _appDBContext.Entry(curModel).CurrentValues.SetValues(model);
-
-                _appDBContext.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                Console.Write(ex.Message);
-                throw new Exception("Ошибка при обновлении тренера");
-            }
         }
     }
 }
