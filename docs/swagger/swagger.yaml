@@ -2,6 +2,7 @@ openapi: 3.0.1
 info:
   title: db_cp
   version: '1.0'
+  description: The API for the FootballCheck project
 paths:
   "/api/v1/agents":
     get:
@@ -16,8 +17,17 @@ paths:
         '200':
           description: Success
     post:
+      security:
+      - bearerAuth: []
       tags:
       - Agent
+      parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
       requestBody:
         content:
           application/json:
@@ -48,9 +58,18 @@ paths:
           description: Conflict
   "/api/v1/agents/{id}":
     put:
+      security:
+      - bearerAuth: []
       tags:
       - Agent
       parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
+        
       - name: id
         in: path
         required: true
@@ -88,9 +107,18 @@ paths:
         '409':
           description: Conflict
     patch:
+      security:
+      - bearerAuth: []
       tags:
       - Agent
       parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
+
       - name: id
         in: path
         required: true
@@ -128,9 +156,18 @@ paths:
         '409':
           description: Conflict
     delete:
+      security:
+      - bearerAuth: []
       tags:
       - Agent
       parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
+        
       - name: id
         in: path
         required: true
@@ -208,8 +245,18 @@ paths:
         '200':
           description: Success
     post:
+      security:
+      - bearerAuth: []
       tags:
       - Club
+      parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
+
       requestBody:
         content:
           application/json:
@@ -240,9 +287,18 @@ paths:
           description: Conflict
   "/api/v1/clubs/{id}":
     put:
+      security:
+      - bearerAuth: []
       tags:
       - Club
       parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
+
       - name: id
         in: path
         required: true
@@ -280,9 +336,18 @@ paths:
         '409':
           description: Conflict
     patch:
+      security:
+      - bearerAuth: []
       tags:
       - Club
       parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
+
       - name: id
         in: path
         required: true
@@ -320,9 +385,18 @@ paths:
         '409':
           description: Conflict
     delete:
+      security:
+      - bearerAuth: []
       tags:
       - Club
       parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
+
       - name: id
         in: path
         required: true
@@ -400,8 +474,17 @@ paths:
         '200':
           description: Success
     post:
+      security:
+      - bearerAuth: []
       tags:
       - Coach
+      parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
       requestBody:
         content:
           application/json:
@@ -432,9 +515,18 @@ paths:
           description: Conflict
   "/api/v1/coaches/{id}":
     put:
+      security:
+      - bearerAuth: []
       tags:
       - Coach
       parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
+
       - name: id
         in: path
         required: true
@@ -472,9 +564,18 @@ paths:
         '409':
           description: Conflict
     patch:
+      security:
+      - bearerAuth: []
       tags:
       - Coach
       parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
+
       - name: id
         in: path
         required: true
@@ -512,9 +613,18 @@ paths:
         '409':
           description: Conflict
     delete:
+      security:
+      - bearerAuth: []
       tags:
       - Coach
       parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
+        
       - name: id
         in: path
         required: true
@@ -606,8 +716,18 @@ paths:
         '200':
           description: Success
     post:
+      security:
+      - bearerAuth: []
       tags:
       - Player
+      parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
+
       requestBody:
         content:
           application/json:
@@ -638,9 +758,18 @@ paths:
           description: Conflict
   "/api/v1/players/{id}":
     put:
+      security:
+      - bearerAuth: []
       tags:
       - Player
       parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
+
       - name: id
         in: path
         required: true
@@ -678,9 +807,18 @@ paths:
         '409':
           description: Conflict
     patch:
+      security:
+      - bearerAuth: []
       tags:
       - Player
       parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
+
       - name: id
         in: path
         required: true
@@ -718,9 +856,18 @@ paths:
         '409':
           description: Conflict
     delete:
+      security:
+      - bearerAuth: []
       tags:
       - Player
       parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
+
       - name: id
         in: path
         required: true
@@ -780,8 +927,17 @@ paths:
         '200':
           description: Success
     post:
+      security:
+      - bearerAuth: []
       tags:
       - Squad
+      parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
       requestBody:
         content:
           application/json:
@@ -812,9 +968,18 @@ paths:
           description: Conflict
   "/api/v1/squads/{id}":
     put:
+      security:
+      - bearerAuth: []
       tags:
       - Squad
       parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
+
       - name: id
         in: path
         required: true
@@ -852,9 +1017,18 @@ paths:
         '409':
           description: Conflict
     patch:
+      security:
+      - bearerAuth: []
       tags:
       - Squad
       parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
+
       - name: id
         in: path
         required: true
@@ -892,9 +1066,18 @@ paths:
         '409':
           description: Conflict
     delete:
+      security:
+      - bearerAuth: []
       tags:
       - Squad
       parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
+
       - name: id
         in: path
         required: true
@@ -943,9 +1126,18 @@ paths:
           description: Not Found
   "/api/v1/squads/{squadId}/myplayers":
     get:
+      security:
+      - bearerAuth: []
       tags:
       - Squad
       parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
+
       - name: squadId
         in: path
         required: true
@@ -993,9 +1185,18 @@ paths:
           description: Success
   "/api/v1/squads/{squadId}/mycoach":
     get:
+      security:
+      - bearerAuth: []
       tags:
       - Squad
       parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
+
       - name: squadId
         in: path
         required: true
@@ -1007,9 +1208,18 @@ paths:
           description: Success
   "/api/v1/squads/{squadId}/myplayers/{playerId}":
     post:
+      security:
+      - bearerAuth: []
       tags:
       - Squad
       parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
+
       - name: squadId
         in: path
         required: true
@@ -1038,9 +1248,18 @@ paths:
         '409':
           description: Conflict
     delete:
+      security:
+      - bearerAuth: []
       tags:
       - Squad
       parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
+
       - name: squadId
         in: path
         required: true
@@ -1070,9 +1289,18 @@ paths:
           description: Conflict
   "/api/v1/squads/{squadId}/mycoach/{coachId}":
     post:
+      security:
+      - bearerAuth: []
       tags:
       - Squad
       parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
+
       - name: squadId
         in: path
         required: true
@@ -1101,9 +1329,18 @@ paths:
         '409':
           description: Conflict
     delete:
+      security:
+      - bearerAuth: []
       tags:
       - Squad
       parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
+
       - name: squadId
         in: path
         required: true
@@ -1160,8 +1397,18 @@ paths:
                 items:
                   "$ref": "#/components/schemas/UserDto"
     post:
+      security:
+      - bearerAuth: []
       tags:
       - User
+      parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
+
       requestBody:
         content:
           application/json:
@@ -1192,9 +1439,18 @@ paths:
           description: Conflict
   "/api/v1/users/{id}":
     put:
+      security:
+      - bearerAuth: []
       tags:
       - User
       parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
+
       - name: id
         in: path
         required: true
@@ -1232,9 +1488,18 @@ paths:
         '409':
           description: Conflict
     patch:
+      security:
+      - bearerAuth: []
       tags:
       - User
       parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
+
       - name: id
         in: path
         required: true
@@ -1272,9 +1537,18 @@ paths:
         '409':
           description: Conflict
     delete:
+      security:
+      - bearerAuth: []
       tags:
       - User
       parameters:
+      - in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+        description: Authorization Bearer
+        
       - name: id
         in: path
         required: true
