@@ -1,0 +1,1666 @@
+openapi: 3.0.1
+info:
+  title: db_cp
+  version: '1.0'
+paths:
+  "/api/v1/agents":
+    get:
+      tags:
+      - Agent
+      parameters:
+      - name: sortState
+        in: query
+        schema:
+          "$ref": "#/components/schemas/AgentSortState"
+      responses:
+        '200':
+          description: Success
+    post:
+      tags:
+      - Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AgentDto"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/AgentDto"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/AgentDto"
+      responses:
+        '201':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/AgentDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AgentDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/AgentDto"
+        '400':
+          description: Bad Request
+        '409':
+          description: Conflict
+  "/api/v1/agents/{id}":
+    put:
+      tags:
+      - Agent
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AgentBaseDto"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/AgentBaseDto"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/AgentBaseDto"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/AgentDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AgentDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/AgentDto"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+    patch:
+      tags:
+      - Agent
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AgentBaseDto"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/AgentBaseDto"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/AgentBaseDto"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/AgentDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AgentDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/AgentDto"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+    delete:
+      tags:
+      - Agent
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/AgentDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AgentDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/AgentDto"
+        '404':
+          description: Not Found
+    get:
+      tags:
+      - Agent
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/AgentDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AgentDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/AgentDto"
+        '404':
+          description: Not Found
+  "/api/v1/clubs":
+    get:
+      tags:
+      - Club
+      parameters:
+      - name: Name
+        in: query
+        schema:
+          type: string
+      - name: Country
+        in: query
+        schema:
+          type: string
+      - name: MinFoundationDate
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: MaxFoundationDate
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: sortState
+        in: query
+        schema:
+          "$ref": "#/components/schemas/ClubSortState"
+      responses:
+        '200':
+          description: Success
+    post:
+      tags:
+      - Club
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ClubDto"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/ClubDto"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/ClubDto"
+      responses:
+        '201':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ClubDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ClubDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ClubDto"
+        '400':
+          description: Bad Request
+        '409':
+          description: Conflict
+  "/api/v1/clubs/{id}":
+    put:
+      tags:
+      - Club
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ClubBaseDto"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/ClubBaseDto"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/ClubBaseDto"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ClubDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ClubDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ClubDto"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+    patch:
+      tags:
+      - Club
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ClubBaseDto"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/ClubBaseDto"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/ClubBaseDto"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ClubDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ClubDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ClubDto"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+    delete:
+      tags:
+      - Club
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ClubDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ClubDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ClubDto"
+        '404':
+          description: Not Found
+    get:
+      tags:
+      - Club
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/ClubDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ClubDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/ClubDto"
+        '404':
+          description: Not Found
+  "/api/v1/coaches":
+    get:
+      tags:
+      - Coach
+      parameters:
+      - name: Surname
+        in: query
+        schema:
+          type: string
+      - name: Country
+        in: query
+        schema:
+          type: string
+      - name: MinWorkExperience
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: MaxWorkExperience
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: sortState
+        in: query
+        schema:
+          "$ref": "#/components/schemas/CoachSortState"
+      responses:
+        '200':
+          description: Success
+    post:
+      tags:
+      - Coach
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CoachDto"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/CoachDto"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/CoachDto"
+      responses:
+        '201':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/CoachDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CoachDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/CoachDto"
+        '400':
+          description: Bad Request
+        '409':
+          description: Conflict
+  "/api/v1/coaches/{id}":
+    put:
+      tags:
+      - Coach
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CoachBaseDto"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/CoachBaseDto"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/CoachBaseDto"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/CoachDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CoachDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/CoachDto"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+    patch:
+      tags:
+      - Coach
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CoachBaseDto"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/CoachBaseDto"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/CoachBaseDto"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/CoachDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CoachDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/CoachDto"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+    delete:
+      tags:
+      - Coach
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/CoachDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CoachDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/CoachDto"
+        '404':
+          description: Not Found
+    get:
+      tags:
+      - Coach
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/CoachDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CoachDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/CoachDto"
+        '404':
+          description: Not Found
+  "/api/v1/players":
+    get:
+      tags:
+      - Player
+      parameters:
+      - name: ClubName
+        in: query
+        schema:
+          type: string
+      - name: Surname
+        in: query
+        schema:
+          type: string
+      - name: Country
+        in: query
+        schema:
+          type: string
+      - name: MinPrice
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: MaxPrice
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: MinRating
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: MaxRating
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: sortState
+        in: query
+        schema:
+          "$ref": "#/components/schemas/PlayerSortState"
+      responses:
+        '200':
+          description: Success
+    post:
+      tags:
+      - Player
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/PlayerDto"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/PlayerDto"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/PlayerDto"
+      responses:
+        '201':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/PlayerDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PlayerDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/PlayerDto"
+        '400':
+          description: Bad Request
+        '409':
+          description: Conflict
+  "/api/v1/players/{id}":
+    put:
+      tags:
+      - Player
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/PlayerBaseDto"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/PlayerBaseDto"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/PlayerBaseDto"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/PlayerDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PlayerDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/PlayerDto"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+    patch:
+      tags:
+      - Player
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/PlayerBaseDto"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/PlayerBaseDto"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/PlayerBaseDto"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/PlayerDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PlayerDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/PlayerDto"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+    delete:
+      tags:
+      - Player
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/PlayerDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PlayerDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/PlayerDto"
+        '404':
+          description: Not Found
+    get:
+      tags:
+      - Player
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/PlayerDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PlayerDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/PlayerDto"
+        '404':
+          description: Not Found
+  "/api/v1/squads":
+    get:
+      tags:
+      - Squad
+      parameters:
+      - name: sortState
+        in: query
+        schema:
+          "$ref": "#/components/schemas/SquadSortState"
+      responses:
+        '200':
+          description: Success
+    post:
+      tags:
+      - Squad
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SquadDto"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/SquadDto"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/SquadDto"
+      responses:
+        '201':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+        '400':
+          description: Bad Request
+        '409':
+          description: Conflict
+  "/api/v1/squads/{id}":
+    put:
+      tags:
+      - Squad
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SquadBaseDto"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/SquadBaseDto"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/SquadBaseDto"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+    patch:
+      tags:
+      - Squad
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SquadBaseDto"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/SquadBaseDto"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/SquadBaseDto"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+    delete:
+      tags:
+      - Squad
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+        '404':
+          description: Not Found
+    get:
+      tags:
+      - Squad
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+        '404':
+          description: Not Found
+  "/api/v1/squads/{squadId}/myplayers":
+    get:
+      tags:
+      - Squad
+      parameters:
+      - name: squadId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: ClubName
+        in: query
+        schema:
+          type: string
+      - name: Surname
+        in: query
+        schema:
+          type: string
+      - name: Country
+        in: query
+        schema:
+          type: string
+      - name: MinPrice
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: MaxPrice
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: MinRating
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: MaxRating
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: sortState
+        in: query
+        schema:
+          "$ref": "#/components/schemas/PlayerSortState"
+      responses:
+        '200':
+          description: Success
+  "/api/v1/squads/{squadId}/mycoach":
+    get:
+      tags:
+      - Squad
+      parameters:
+      - name: squadId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+  "/api/v1/squads/{squadId}/myplayers/{playerId}":
+    post:
+      tags:
+      - Squad
+      parameters:
+      - name: squadId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: playerId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '201':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+        '409':
+          description: Conflict
+    delete:
+      tags:
+      - Squad
+      parameters:
+      - name: squadId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: playerId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '201':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+        '409':
+          description: Conflict
+  "/api/v1/squads/{squadId}/mycoach/{coachId}":
+    post:
+      tags:
+      - Squad
+      parameters:
+      - name: squadId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: coachId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '201':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+        '409':
+          description: Conflict
+    delete:
+      tags:
+      - Squad
+      parameters:
+      - name: squadId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: coachId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '201':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+        '409':
+          description: Conflict
+  "/api/v1/users":
+    get:
+      tags:
+      - User
+      parameters:
+      - name: sortState
+        in: query
+        schema:
+          "$ref": "#/components/schemas/UserSortState"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/UserDto"
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/UserDto"
+            text/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/UserDto"
+    post:
+      tags:
+      - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UserPasswordDto"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/UserPasswordDto"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/UserPasswordDto"
+      responses:
+        '201':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/UserDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/UserDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/UserDto"
+        '400':
+          description: Bad Request
+        '409':
+          description: Conflict
+  "/api/v1/users/{id}":
+    put:
+      tags:
+      - User
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UserPasswordDto"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/UserPasswordDto"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/UserPasswordDto"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/UserDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/UserDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/UserDto"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+    patch:
+      tags:
+      - User
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UserPasswordDto"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/UserPasswordDto"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/UserPasswordDto"
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/UserDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/UserDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/UserDto"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+    delete:
+      tags:
+      - User
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/UserDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/UserDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/UserDto"
+        '404':
+          description: Not Found
+    get:
+      tags:
+      - User
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/UserDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/UserDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/UserDto"
+        '404':
+          description: Not Found
+  "/api/v1/users/login":
+    post:
+      tags:
+      - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/LoginDto"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/LoginDto"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/LoginDto"
+      responses:
+        '201':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/UserDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/UserDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/UserDto"
+        '404':
+          description: Not Found
+  "/api/v1/users/register":
+    post:
+      tags:
+      - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/LoginDto"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/LoginDto"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/LoginDto"
+      responses:
+        '201':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/LoginDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/LoginDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/LoginDto"
+        '400':
+          description: Bad Request
+        '409':
+          description: Conflict
+components:
+  schemas:
+    AgentBaseDto:
+      type: object
+      properties:
+        playerId:
+          type: integer
+          format: int32
+          nullable: true
+        surname:
+          type: string
+          nullable: true
+        country:
+          type: string
+          nullable: true
+      additionalProperties: false
+    AgentDto:
+      type: object
+      properties:
+        playerId:
+          type: integer
+          format: int32
+          nullable: true
+        surname:
+          type: string
+          nullable: true
+        country:
+          type: string
+          nullable: true
+        id:
+          type: integer
+          format: int32
+      additionalProperties: false
+    AgentSortState:
+      enum:
+      - IdAsc
+      - IdDesc
+      - PlayerSurnameAsc
+      - PlayerSurnameDesc
+      - SurnameAsc
+      - SurnameDesc
+      - CountryAsc
+      - CountryDesc
+      type: string
+    ClubBaseDto:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        country:
+          type: string
+          nullable: true
+        foundationDate:
+          type: integer
+          format: int32
+          nullable: true
+      additionalProperties: false
+    ClubDto:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        country:
+          type: string
+          nullable: true
+        foundationDate:
+          type: integer
+          format: int32
+          nullable: true
+        id:
+          type: integer
+          format: int32
+      additionalProperties: false
+    ClubSortState:
+      enum:
+      - IdAsc
+      - IdDesc
+      - NameAsc
+      - NameDesc
+      - CountryAsc
+      - CountryDesc
+      - FoundationDateAsc
+      - FoundationDateDesc
+      type: string
+    CoachBaseDto:
+      type: object
+      properties:
+        surname:
+          type: string
+          nullable: true
+        country:
+          type: string
+          nullable: true
+        workExperience:
+          type: integer
+          format: int32
+          nullable: true
+      additionalProperties: false
+    CoachDto:
+      type: object
+      properties:
+        surname:
+          type: string
+          nullable: true
+        country:
+          type: string
+          nullable: true
+        workExperience:
+          type: integer
+          format: int32
+          nullable: true
+        id:
+          type: integer
+          format: int32
+      additionalProperties: false
+    CoachSortState:
+      enum:
+      - IdAsc
+      - IdDesc
+      - SurnameAsc
+      - SurnameDesc
+      - CountryAsc
+      - CountryDesc
+      - WorkExperienceAsc
+      - WorkExperienceDesc
+      type: string
+    LoginDto:
+      type: object
+      properties:
+        login:
+          type: string
+          nullable: true
+        password:
+          type: string
+          nullable: true
+      additionalProperties: false
+    PlayerBaseDto:
+      type: object
+      properties:
+        clubId:
+          type: integer
+          format: int32
+          nullable: true
+        surname:
+          type: string
+          nullable: true
+        rating:
+          type: integer
+          format: int32
+          nullable: true
+        country:
+          type: string
+          nullable: true
+        price:
+          type: integer
+          format: int32
+          nullable: true
+      additionalProperties: false
+    PlayerDto:
+      type: object
+      properties:
+        clubId:
+          type: integer
+          format: int32
+          nullable: true
+        surname:
+          type: string
+          nullable: true
+        rating:
+          type: integer
+          format: int32
+          nullable: true
+        country:
+          type: string
+          nullable: true
+        price:
+          type: integer
+          format: int32
+          nullable: true
+        id:
+          type: integer
+          format: int32
+      additionalProperties: false
+    PlayerSortState:
+      enum:
+      - IdAsc
+      - IdDesc
+      - SurnameAsc
+      - SurnameDesc
+      - RatingAsc
+      - RatingDesc
+      - CountryAsc
+      - CountryDesc
+      - ClubNameAsc
+      - ClubNameDesc
+      - PriceAsc
+      - PriceDesc
+      type: string
+    SquadBaseDto:
+      type: object
+      properties:
+        coachId:
+          type: integer
+          format: int32
+          nullable: true
+        name:
+          type: string
+          nullable: true
+        rating:
+          type: integer
+          format: int32
+          nullable: true
+      additionalProperties: false
+    SquadDto:
+      type: object
+      properties:
+        coachId:
+          type: integer
+          format: int32
+          nullable: true
+        name:
+          type: string
+          nullable: true
+        rating:
+          type: integer
+          format: int32
+          nullable: true
+        id:
+          type: integer
+          format: int32
+      additionalProperties: false
+    SquadSortState:
+      enum:
+      - IdAsc
+      - IdDesc
+      - CoachSurnameAsc
+      - CoachSurnameDesc
+      - NameAsc
+      - NameDesc
+      - RatingAsc
+      - RatingDesc
+      type: string
+    UserDto:
+      type: object
+      properties:
+        login:
+          type: string
+          nullable: true
+        permission:
+          type: string
+          nullable: true
+        id:
+          type: integer
+          format: int32
+      additionalProperties: false
+    UserPasswordDto:
+      type: object
+      properties:
+        login:
+          type: string
+          nullable: true
+        permission:
+          type: string
+          nullable: true
+        password:
+          type: string
+          nullable: true
+      additionalProperties: false
+    UserSortState:
+      enum:
+      - IdAsc
+      - IdDesc
+      - LoginAsc
+      - LoginDesc
+      - PermissionAsc
+      - PermissionDesc
+      - RatingSquadAsc
+      - RatingSquadDesc
+      type: string

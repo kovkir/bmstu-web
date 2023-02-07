@@ -18,9 +18,6 @@ namespace db_cp.ModelsConverters
         {
             var existedPlayer = playerService.GetByID(id);
 
-            //if (existedPlayer == null)
-            //    throw new Exception("Такого футболиста не существует");
-
             return new PlayerBL
             {
                 Id = id,

@@ -30,6 +30,7 @@ namespace db_cp.Controllers
                                 IMapper mapper, PlayerConverters playerConverters)
         {
             this.playerService = playerService;
+            this.squadService = squadService;
             this.mapper = mapper;
             this.playerConverters = playerConverters;
         }
