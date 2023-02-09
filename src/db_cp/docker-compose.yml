@@ -10,7 +10,7 @@ services:
     environment:
       - POSTGRES_PASSWORD=1801
       - POSTGRES_USER=postgres
-      - POSTGRES_DB=web
+      - POSTGRES_DB=WebDB
 
   pgadmin:
     depends_on:
@@ -36,9 +36,4 @@ services:
     ports:
       # на маке 8080 в контейнере 80 порт
       - "8080:80"
-    # links:
-    #   - backend_1
-    #   # - backend_4
-    #   - backend_5
-    #   # - backend_2
-    #   # - backend_3
+      

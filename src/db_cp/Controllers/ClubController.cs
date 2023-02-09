@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using db_cp.DTO;
 using db_cp.ModelsBL;
@@ -25,13 +26,15 @@ namespace db_cp.Controllers
         private IClubService clubService;
         private IMapper mapper;
         private ClubConverters clubConverters;
+        private readonly ILogger<ClubController> _logger;
 
         public ClubController(IClubService clubService, IMapper mapper,
-                              ClubConverters clubConverters)
+                              ClubConverters clubConverters, ILogger<ClubController> logger)
         {
             this.clubService = clubService;
             this.mapper = mapper;
             this.clubConverters = clubConverters;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [HttpGet]
@@ -40,6 +43,7 @@ namespace db_cp.Controllers
             [FromQuery] ClubSortState? sortState
         )
         {
+             _logger.LogInformation("Clubs (Request: GET)");
             return Ok(mapper.Map<IEnumerable<ClubDto>>(clubService.GetAll(filter, sortState)));
         }
 
