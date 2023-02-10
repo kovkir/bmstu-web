@@ -45,7 +45,7 @@ namespace db_cp.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(UserDto), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(UserIdPasswordDto), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
         public IActionResult Add(UserPasswordDto userDto)
@@ -53,7 +53,7 @@ namespace db_cp.Controllers
             try
             {
                 var addedUser = userService.Add(mapper.Map<UserBL>(userDto));
-                return Ok(mapper.Map<UserPasswordDto>(addedUser));
+                return Ok(mapper.Map<UserIdPasswordDto>(addedUser));
             }
             catch (Exception ex)
             {
@@ -61,25 +61,25 @@ namespace db_cp.Controllers
             }
         }
 
-        [HttpPut("{id}")]
-        [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
-        public IActionResult Put(int id, UserPasswordDto user)
-        {
-            try
-            {
-                var updatedUser = userService.Update(mapper.Map<UserBL>(user,
-                        o => o.AfterMap((src, dest) => dest.Id = id)));
+        // [HttpPut("{id}")]
+        // [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
+        // [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        // [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        // [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
+        // public IActionResult Put(int id, UserPasswordDto user)
+        // {
+        //     try
+        //     {
+        //         var updatedUser = userService.Update(mapper.Map<UserBL>(user,
+        //                 o => o.AfterMap((src, dest) => dest.Id = id)));
 
-                return updatedUser != null ? Ok(mapper.Map<UserDto>(updatedUser)) : NotFound();
-            }
-            catch (Exception ex)
-            {
-                return Conflict(ex.Message);
-            }
-        }
+        //         return updatedUser != null ? Ok(mapper.Map<UserDto>(updatedUser)) : NotFound();
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         return Conflict(ex.Message);
+        //     }
+        // }
 
         [HttpPatch("{id}")]
         [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
@@ -127,7 +127,7 @@ namespace db_cp.Controllers
         }
 
         [HttpPost("register")]
-        [ProducesResponseType(typeof(LoginDto), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(UserIdPasswordDto), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
         public IActionResult Register(LoginDto loginDto)

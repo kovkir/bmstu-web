@@ -51,7 +51,7 @@ namespace db_cp.Controllers
         [ProducesResponseType(typeof(ClubDto), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
-        public IActionResult Add(ClubDto clubDto)
+        public IActionResult Add(ClubBaseDto clubDto)
         {
             try
             {
@@ -84,23 +84,23 @@ namespace db_cp.Controllers
             }
         }
 
-        [HttpPatch("{id}")]
-        [ProducesResponseType(typeof(ClubDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
-        public IActionResult Patch(int id, ClubBaseDto club)
-        {
-            try
-            {
-                var updatedClub = clubService.Update(clubConverters.convertPatch(id, club));
-                return updatedClub != null ? Ok(mapper.Map<ClubDto>(updatedClub)) : NotFound();
-            }
-            catch (Exception ex)
-            {
-                return Conflict(ex.Message);
-            }
-        }
+        // [HttpPatch("{id}")]
+        // [ProducesResponseType(typeof(ClubDto), StatusCodes.Status200OK)]
+        // [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        // [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        // [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
+        // public IActionResult Patch(int id, ClubBaseDto club)
+        // {
+        //     try
+        //     {
+        //         var updatedClub = clubService.Update(clubConverters.convertPatch(id, club));
+        //         return updatedClub != null ? Ok(mapper.Map<ClubDto>(updatedClub)) : NotFound();
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         return Conflict(ex.Message);
+        //     }
+        // }
 
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(ClubDto), StatusCodes.Status200OK)]

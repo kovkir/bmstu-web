@@ -19,4 +19,9 @@
         public uint? MinWorkExperience { get; set; }
         public uint? MaxWorkExperience { get; set; }
     }
+
+    public class CoachIdDto
+    {
+        public int Id { get; set; }
+    }
 }

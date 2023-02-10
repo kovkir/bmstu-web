@@ -24,4 +24,9 @@
         public uint? MinRating { get; set; }
         public uint? MaxRating { get; set; }
     }
+
+    public class PlayerIdDto
+    {
+        public int Id { get; set; }
+    }
 }

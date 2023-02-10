@@ -36,7 +36,6 @@ namespace db_cp.Controllers
         }
 
 
-        [EnableCors("MyPolicy")]
         [HttpGet]
         public IActionResult GetAll(
             [FromQuery] PlayerFilterDto filter,
@@ -50,7 +49,7 @@ namespace db_cp.Controllers
         [ProducesResponseType(typeof(PlayerDto), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
-        public IActionResult Add(PlayerDto playerDto)
+        public IActionResult Add(PlayerBaseDto playerDto)
         {
             try
             {
@@ -83,23 +82,23 @@ namespace db_cp.Controllers
             }
         }
 
-        [HttpPatch("{id}")]
-        [ProducesResponseType(typeof(PlayerDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
-        public IActionResult Patch(int id, PlayerBaseDto player)
-        {
-            try
-            {
-                var updatedPlayer = playerService.Update(playerConverters.convertPatch(id, player));
-                return updatedPlayer != null ? Ok(mapper.Map<PlayerDto>(updatedPlayer)) : NotFound();
-            }
-            catch (Exception ex)
-            {
-                return Conflict(ex.Message);
-            }
-        }
+        // [HttpPatch("{id}")]
+        // [ProducesResponseType(typeof(PlayerDto), StatusCodes.Status200OK)]
+        // [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        // [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        // [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
+        // public IActionResult Patch(int id, PlayerBaseDto player)
+        // {
+        //     try
+        //     {
+        //         var updatedPlayer = playerService.Update(playerConverters.convertPatch(id, player));
+        //         return updatedPlayer != null ? Ok(mapper.Map<PlayerDto>(updatedPlayer)) : NotFound();
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         return Conflict(ex.Message);
+        //     }
+        // }
 
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(PlayerDto), StatusCodes.Status200OK)]

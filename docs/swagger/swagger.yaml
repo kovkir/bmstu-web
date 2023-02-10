@@ -2,7 +2,6 @@ openapi: 3.0.1
 info:
   title: db_cp
   version: '1.0'
-  description: The API for the FootballCheck project
 paths:
   "/api/v1/agents":
     get:
@@ -21,24 +20,17 @@ paths:
       - bearerAuth: []
       tags:
       - Agent
-      parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
       requestBody:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/AgentDto"
+              "$ref": "#/components/schemas/AgentBaseDto"
           text/json:
             schema:
-              "$ref": "#/components/schemas/AgentDto"
+              "$ref": "#/components/schemas/AgentBaseDto"
           application/*+json:
             schema:
-              "$ref": "#/components/schemas/AgentDto"
+              "$ref": "#/components/schemas/AgentBaseDto"
       responses:
         '201':
           description: Success
@@ -56,7 +48,6 @@ paths:
           description: Bad Request
         '409':
           description: Conflict
-
         '401':
             description: Unauthorized
             content:
@@ -66,19 +57,17 @@ paths:
                   properties:
                     errorMessage:
                       type: string
-                      example: "User must be logged in"
-          
+                      example: "User must be logged in"  
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
-                    
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMessage:
+                      type: string
+                      example: "Not enough rights for this"
   "/api/v1/agents/{id}":
     put:
       security:
@@ -86,13 +75,6 @@ paths:
       tags:
       - Agent
       parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
-        
       - name: id
         in: path
         required: true
@@ -129,78 +111,6 @@ paths:
           description: Not Found
         '409':
           description: Conflict
-
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "User must be logged in"
-          
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
-    patch:
-      security:
-      - bearerAuth: []
-      tags:
-      - Agent
-      parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
-
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int32
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/AgentBaseDto"
-          text/json:
-            schema:
-              "$ref": "#/components/schemas/AgentBaseDto"
-          application/*+json:
-            schema:
-              "$ref": "#/components/schemas/AgentBaseDto"
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                "$ref": "#/components/schemas/AgentDto"
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/AgentDto"
-            text/json:
-              schema:
-                "$ref": "#/components/schemas/AgentDto"
-        '400':
-          description: Bad Request
-        '404':
-          description: Not Found
-        '409':
-          description: Conflict
-
         '401':
             description: Unauthorized
             content:
@@ -211,30 +121,22 @@ paths:
                     errorMessage:
                       type: string
                       example: "User must be logged in"
-          
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMessage:
+                      type: string
+                      example: "Not enough rights for this"
     delete:
       security:
       - bearerAuth: []
       tags:
       - Agent
       parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
-        
       - name: id
         in: path
         required: true
@@ -256,7 +158,6 @@ paths:
                 "$ref": "#/components/schemas/AgentDto"
         '404':
           description: Not Found
-
         '401':
             description: Unauthorized
             content:
@@ -266,18 +167,17 @@ paths:
                   properties:
                     errorMessage:
                       type: string
-                      example: "User must be logged in"
-          
+                      example: "User must be logged in" 
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMessage:
+                      type: string
+                      example: "Not enough rights for this"
     get:
       tags:
       - Agent
@@ -338,25 +238,17 @@ paths:
       - bearerAuth: []
       tags:
       - Club
-      parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
-
       requestBody:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/ClubDto"
+              "$ref": "#/components/schemas/ClubBaseDto"
           text/json:
             schema:
-              "$ref": "#/components/schemas/ClubDto"
+              "$ref": "#/components/schemas/ClubBaseDto"
           application/*+json:
             schema:
-              "$ref": "#/components/schemas/ClubDto"
+              "$ref": "#/components/schemas/ClubBaseDto"
       responses:
         '201':
           description: Success
@@ -374,7 +266,6 @@ paths:
           description: Bad Request
         '409':
           description: Conflict
-        
         '401':
             description: Unauthorized
             content:
@@ -384,19 +275,17 @@ paths:
                   properties:
                     errorMessage:
                       type: string
-                      example: "User must be logged in"
-          
+                      example: "User must be logged in" 
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
-
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMessage:
+                      type: string
+                      example: "Not enough rights for this"
   "/api/v1/clubs/{id}":
     put:
       security:
@@ -404,13 +293,6 @@ paths:
       tags:
       - Club
       parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
-
       - name: id
         in: path
         required: true
@@ -447,7 +329,6 @@ paths:
           description: Not Found
         '409':
           description: Conflict
-        
         '401':
             description: Unauthorized
             content:
@@ -458,69 +339,8 @@ paths:
                     errorMessage:
                       type: string
                       example: "User must be logged in"
-          
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
-    patch:
-      security:
-      - bearerAuth: []
-      tags:
-      - Club
-      parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
-
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int32
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ClubBaseDto"
-          text/json:
-            schema:
-              "$ref": "#/components/schemas/ClubBaseDto"
-          application/*+json:
-            schema:
-              "$ref": "#/components/schemas/ClubBaseDto"
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                "$ref": "#/components/schemas/ClubDto"
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ClubDto"
-            text/json:
-              schema:
-                "$ref": "#/components/schemas/ClubDto"
-        '400':
-          description: Bad Request
-        '404':
-          description: Not Found
-        '409':
-          description: Conflict
-        
-        '401':
-            description: Unauthorized
+            description: Forbidden
             content:
               application/json:
                 schema:
@@ -528,31 +348,13 @@ paths:
                   properties:
                     errorMessage:
                       type: string
-                      example: "User must be logged in"
-          
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
+                      example: "Not enough rights for this"
     delete:
       security:
       - bearerAuth: []
       tags:
       - Club
       parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
-
       - name: id
         in: path
         required: true
@@ -574,7 +376,6 @@ paths:
                 "$ref": "#/components/schemas/ClubDto"
         '404':
           description: Not Found
-        
         '401':
             description: Unauthorized
             content:
@@ -584,18 +385,17 @@ paths:
                   properties:
                     errorMessage:
                       type: string
-                      example: "User must be logged in"
-          
+                      example: "User must be logged in" 
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMessage:
+                      type: string
+                      example: "Not enough rights for this"
     get:
       tags:
       - Club
@@ -656,24 +456,17 @@ paths:
       - bearerAuth: []
       tags:
       - Coach
-      parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
       requestBody:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/CoachDto"
+              "$ref": "#/components/schemas/CoachBaseDto"
           text/json:
             schema:
-              "$ref": "#/components/schemas/CoachDto"
+              "$ref": "#/components/schemas/CoachBaseDto"
           application/*+json:
             schema:
-              "$ref": "#/components/schemas/CoachDto"
+              "$ref": "#/components/schemas/CoachBaseDto"
       responses:
         '201':
           description: Success
@@ -691,7 +484,6 @@ paths:
           description: Bad Request
         '409':
           description: Conflict
-        
         '401':
             description: Unauthorized
             content:
@@ -702,17 +494,16 @@ paths:
                     errorMessage:
                       type: string
                       example: "User must be logged in"
-          
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMessage:
+                      type: string
+                      example: "Not enough rights for this"
   "/api/v1/coaches/{id}":
     put:
       security:
@@ -720,13 +511,6 @@ paths:
       tags:
       - Coach
       parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
-
       - name: id
         in: path
         required: true
@@ -763,7 +547,6 @@ paths:
           description: Not Found
         '409':
           description: Conflict
-        
         '401':
             description: Unauthorized
             content:
@@ -774,69 +557,8 @@ paths:
                     errorMessage:
                       type: string
                       example: "User must be logged in"
-          
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
-    patch:
-      security:
-      - bearerAuth: []
-      tags:
-      - Coach
-      parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
-
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int32
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/CoachBaseDto"
-          text/json:
-            schema:
-              "$ref": "#/components/schemas/CoachBaseDto"
-          application/*+json:
-            schema:
-              "$ref": "#/components/schemas/CoachBaseDto"
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                "$ref": "#/components/schemas/CoachDto"
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/CoachDto"
-            text/json:
-              schema:
-                "$ref": "#/components/schemas/CoachDto"
-        '400':
-          description: Bad Request
-        '404':
-          description: Not Found
-        '409':
-          description: Conflict
-        
-        '401':
-            description: Unauthorized
+            description: Forbidden
             content:
               application/json:
                 schema:
@@ -844,31 +566,13 @@ paths:
                   properties:
                     errorMessage:
                       type: string
-                      example: "User must be logged in"
-          
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
+                      example: "Not enough rights for this"
     delete:
       security:
       - bearerAuth: []
       tags:
       - Coach
       parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
-        
       - name: id
         in: path
         required: true
@@ -890,7 +594,6 @@ paths:
                 "$ref": "#/components/schemas/CoachDto"
         '404':
           description: Not Found
-        
         '401':
             description: Unauthorized
             content:
@@ -900,18 +603,17 @@ paths:
                   properties:
                     errorMessage:
                       type: string
-                      example: "User must be logged in"
-          
+                      example: "User must be logged in"   
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMessage:
+                      type: string
+                      example: "Not enough rights for this"
     get:
       tags:
       - Coach
@@ -986,25 +688,17 @@ paths:
       - bearerAuth: []
       tags:
       - Player
-      parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
-
       requestBody:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/PlayerDto"
+              "$ref": "#/components/schemas/PlayerBaseDto"
           text/json:
             schema:
-              "$ref": "#/components/schemas/PlayerDto"
+              "$ref": "#/components/schemas/PlayerBaseDto"
           application/*+json:
             schema:
-              "$ref": "#/components/schemas/PlayerDto"
+              "$ref": "#/components/schemas/PlayerBaseDto"
       responses:
         '201':
           description: Success
@@ -1022,7 +716,6 @@ paths:
           description: Bad Request
         '409':
           description: Conflict
-        
         '401':
             description: Unauthorized
             content:
@@ -1033,17 +726,16 @@ paths:
                     errorMessage:
                       type: string
                       example: "User must be logged in"
-          
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMessage:
+                      type: string
+                      example: "Not enough rights for this"
   "/api/v1/players/{id}":
     put:
       security:
@@ -1051,13 +743,6 @@ paths:
       tags:
       - Player
       parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
-
       - name: id
         in: path
         required: true
@@ -1094,7 +779,6 @@ paths:
           description: Not Found
         '409':
           description: Conflict
-        
         '401':
             description: Unauthorized
             content:
@@ -1105,69 +789,8 @@ paths:
                     errorMessage:
                       type: string
                       example: "User must be logged in"
-          
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
-    patch:
-      security:
-      - bearerAuth: []
-      tags:
-      - Player
-      parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
-
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int32
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/PlayerBaseDto"
-          text/json:
-            schema:
-              "$ref": "#/components/schemas/PlayerBaseDto"
-          application/*+json:
-            schema:
-              "$ref": "#/components/schemas/PlayerBaseDto"
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                "$ref": "#/components/schemas/PlayerDto"
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/PlayerDto"
-            text/json:
-              schema:
-                "$ref": "#/components/schemas/PlayerDto"
-        '400':
-          description: Bad Request
-        '404':
-          description: Not Found
-        '409':
-          description: Conflict
-        
-        '401':
-            description: Unauthorized
+            description: Forbidden
             content:
               application/json:
                 schema:
@@ -1175,31 +798,13 @@ paths:
                   properties:
                     errorMessage:
                       type: string
-                      example: "User must be logged in"
-          
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
+                      example: "Not enough rights for this"
     delete:
       security:
       - bearerAuth: []
       tags:
       - Player
       parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
-
       - name: id
         in: path
         required: true
@@ -1221,7 +826,6 @@ paths:
                 "$ref": "#/components/schemas/PlayerDto"
         '404':
           description: Not Found
-        
         '401':
             description: Unauthorized
             content:
@@ -1232,17 +836,16 @@ paths:
                     errorMessage:
                       type: string
                       example: "User must be logged in"
-          
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMessage:
+                      type: string
+                      example: "Not enough rights for this"
     get:
       tags:
       - Player
@@ -1285,24 +888,17 @@ paths:
       - bearerAuth: []
       tags:
       - Squad
-      parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
       requestBody:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/SquadDto"
+              "$ref": "#/components/schemas/SquadBaseDto"
           text/json:
             schema:
-              "$ref": "#/components/schemas/SquadDto"
+              "$ref": "#/components/schemas/SquadBaseDto"
           application/*+json:
             schema:
-              "$ref": "#/components/schemas/SquadDto"
+              "$ref": "#/components/schemas/SquadBaseDto"
       responses:
         '201':
           description: Success
@@ -1320,7 +916,6 @@ paths:
           description: Bad Request
         '409':
           description: Conflict
-        
         '401':
             description: Unauthorized
             content:
@@ -1331,103 +926,23 @@ paths:
                     errorMessage:
                       type: string
                       example: "User must be logged in"
-          
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
-
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMessage:
+                      type: string
+                      example: "Not enough rights for this"
   "/api/v1/squads/{id}":
-    put:
-      security:
-      - bearerAuth: []
-      tags:
-      - Squad
-      parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
-
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int32
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/SquadBaseDto"
-          text/json:
-            schema:
-              "$ref": "#/components/schemas/SquadBaseDto"
-          application/*+json:
-            schema:
-              "$ref": "#/components/schemas/SquadBaseDto"
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                "$ref": "#/components/schemas/SquadDto"
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/SquadDto"
-            text/json:
-              schema:
-                "$ref": "#/components/schemas/SquadDto"
-        '400':
-          description: Bad Request
-        '404':
-          description: Not Found
-        '409':
-          description: Conflict
-        
-        '401':
-            description: Unauthorized
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    errorMessage:
-                      type: string
-                      example: "User must be logged in"
-          
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
     patch:
       security:
       - bearerAuth: []
       tags:
       - Squad
       parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
-
       - name: id
         in: path
         required: true
@@ -1464,7 +979,6 @@ paths:
           description: Not Found
         '409':
           description: Conflict
-        
         '401':
             description: Unauthorized
             content:
@@ -1475,30 +989,22 @@ paths:
                     errorMessage:
                       type: string
                       example: "User must be logged in"
-          
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMessage:
+                      type: string
+                      example: "Not enough rights for this"
     delete:
       security:
       - bearerAuth: []
       tags:
       - Squad
       parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
-
       - name: id
         in: path
         required: true
@@ -1520,7 +1026,6 @@ paths:
                 "$ref": "#/components/schemas/SquadDto"
         '404':
           description: Not Found
-        
         '401':
             description: Unauthorized
             content:
@@ -1531,17 +1036,16 @@ paths:
                     errorMessage:
                       type: string
                       example: "User must be logged in"
-          
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMessage:
+                      type: string
+                      example: "Not enough rights for this"
     get:
       tags:
       - Squad
@@ -1567,20 +1071,13 @@ paths:
                 "$ref": "#/components/schemas/SquadDto"
         '404':
           description: Not Found
-  "/api/v1/squads/{squadId}/myplayers":
+  "/api/v1/squads/{squadId}/players":
     get:
       security:
       - bearerAuth: []
       tags:
       - Squad
       parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
-
       - name: squadId
         in: path
         required: true
@@ -1626,7 +1123,6 @@ paths:
       responses:
         '200':
           description: Success
-        
         '401':
             description: Unauthorized
             content:
@@ -1637,32 +1133,81 @@ paths:
                     errorMessage:
                       type: string
                       example: "User must be logged in"
-          
         '403':
-          description: Forbidden
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMessage:
+                      type: string
+                      example: "Not enough rights for this"
+    post:
+      security:
+      - bearerAuth: []
+      tags:
+      - Squad
+      parameters:
+      - name: squadId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/PlayerIdDto"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/PlayerIdDto"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/PlayerIdDto"
+      responses:
+        '201':
+          description: Success
           content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
             application/json:
               schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
-
-  "/api/v1/squads/{squadId}/mycoach":
+                "$ref": "#/components/schemas/SquadDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+        '409':
+          description: Conflict
+        '401':
+            description: Unauthorized
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMessage:
+                      type: string
+                      example: "User must be logged in"
+        '403':
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMessage:
+                      type: string
+                      example: "Not enough rights for this"
+  "/api/v1/squads/{squadId}/coach":
     get:
       security:
       - bearerAuth: []
       tags:
       - Squad
       parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
-
       - name: squadId
         in: path
         required: true
@@ -1672,7 +1217,44 @@ paths:
       responses:
         '200':
           description: Success
-        
+    post:
+      security:
+      - bearerAuth: []
+      tags:
+      - Squad
+      parameters:
+      - name: squadId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CoachIdDto"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/CoachIdDto"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/CoachIdDto"
+      responses:
+        '201':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+            text/json:
+              schema:
+                "$ref": "#/components/schemas/SquadDto"
+        '409':
+          description: Conflict
         '401':
             description: Unauthorized
             content:
@@ -1683,32 +1265,23 @@ paths:
                     errorMessage:
                       type: string
                       example: "User must be logged in"
-          
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
-
-  "/api/v1/squads/{squadId}/myplayers/{playerId}":
-    post:
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMessage:
+                      type: string
+                      example: "Not enough rights for this"
+  "/api/v1/squads/{squadId}/players/{playerId}":
+    delete:
       security:
       - bearerAuth: []
       tags:
       - Squad
       parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
-
       - name: squadId
         in: path
         required: true
@@ -1736,7 +1309,6 @@ paths:
                 "$ref": "#/components/schemas/SquadDto"
         '409':
           description: Conflict
-        
         '401':
             description: Unauthorized
             content:
@@ -1747,94 +1319,23 @@ paths:
                     errorMessage:
                       type: string
                       example: "User must be logged in"
-          
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMessage:
+                      type: string
+                      example: "Not enough rights for this"
+  "/api/v1/squads/{squadId}/coach/{coachId}":
     delete:
       security:
       - bearerAuth: []
       tags:
       - Squad
       parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
-
-      - name: squadId
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int32
-      - name: playerId
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int32
-      responses:
-        '201':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                "$ref": "#/components/schemas/SquadDto"
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/SquadDto"
-            text/json:
-              schema:
-                "$ref": "#/components/schemas/SquadDto"
-        '409':
-          description: Conflict
-        
-        '401':
-            description: Unauthorized
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    errorMessage:
-                      type: string
-                      example: "User must be logged in"
-          
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
-
-  "/api/v1/squads/{squadId}/mycoach/{coachId}":
-    post:
-      security:
-      - bearerAuth: []
-      tags:
-      - Squad
-      parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
-
       - name: squadId
         in: path
         required: true
@@ -1862,7 +1363,6 @@ paths:
                 "$ref": "#/components/schemas/SquadDto"
         '409':
           description: Conflict
-        
         '401':
             description: Unauthorized
             content:
@@ -1873,60 +1373,8 @@ paths:
                     errorMessage:
                       type: string
                       example: "User must be logged in"
-          
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
-    delete:
-      security:
-      - bearerAuth: []
-      tags:
-      - Squad
-      parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
-
-      - name: squadId
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int32
-      - name: coachId
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int32
-      responses:
-        '201':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                "$ref": "#/components/schemas/SquadDto"
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/SquadDto"
-            text/json:
-              schema:
-                "$ref": "#/components/schemas/SquadDto"
-        '409':
-          description: Conflict
-        
-        '401':
-            description: Unauthorized
+            description: Forbidden
             content:
               application/json:
                 schema:
@@ -1934,20 +1382,11 @@ paths:
                   properties:
                     errorMessage:
                       type: string
-                      example: "User must be logged in"
-          
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
+                      example: "Not enough rights for this"
   "/api/v1/users":
     get:
+      security:
+      - bearerAuth: []
       tags:
       - User
       parameters:
@@ -1974,19 +1413,31 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/UserDto"
+        '401':
+            description: Unauthorized
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMessage:
+                      type: string
+                      example: "User must be logged in"
+        '403':
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMessage:
+                      type: string
+                      example: "Not enough rights for this"
     post:
       security:
       - bearerAuth: []
       tags:
       - User
-      parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
-
       requestBody:
         content:
           application/json:
@@ -2004,18 +1455,17 @@ paths:
           content:
             text/plain:
               schema:
-                "$ref": "#/components/schemas/UserDto"
+                "$ref": "#/components/schemas/UserIdPasswordDto"
             application/json:
               schema:
-                "$ref": "#/components/schemas/UserDto"
+                "$ref": "#/components/schemas/UserIdPasswordDto"
             text/json:
               schema:
-                "$ref": "#/components/schemas/UserDto"
+                "$ref": "#/components/schemas/UserIdPasswordDto"
         '400':
           description: Bad Request
         '409':
           description: Conflict
-        
         '401':
             description: Unauthorized
             content:
@@ -2026,102 +1476,23 @@ paths:
                     errorMessage:
                       type: string
                       example: "User must be logged in"
-          
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMessage:
+                      type: string
+                      example: "Not enough rights for this"
   "/api/v1/users/{id}":
-    put:
-      security:
-      - bearerAuth: []
-      tags:
-      - User
-      parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
-
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int32
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/UserPasswordDto"
-          text/json:
-            schema:
-              "$ref": "#/components/schemas/UserPasswordDto"
-          application/*+json:
-            schema:
-              "$ref": "#/components/schemas/UserPasswordDto"
-      responses:
-        '200':
-          description: Success
-          content:
-            text/plain:
-              schema:
-                "$ref": "#/components/schemas/UserDto"
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/UserDto"
-            text/json:
-              schema:
-                "$ref": "#/components/schemas/UserDto"
-        '400':
-          description: Bad Request
-        '404':
-          description: Not Found
-        '409':
-          description: Conflict
-        
-        '401':
-            description: Unauthorized
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    errorMessage:
-                      type: string
-                      example: "User must be logged in"
-          
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
     patch:
       security:
       - bearerAuth: []
       tags:
       - User
       parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
-
       - name: id
         in: path
         required: true
@@ -2158,7 +1529,6 @@ paths:
           description: Not Found
         '409':
           description: Conflict
-        
         '401':
             description: Unauthorized
             content:
@@ -2169,30 +1539,22 @@ paths:
                     errorMessage:
                       type: string
                       example: "User must be logged in"
-          
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMessage:
+                      type: string
+                      example: "Not enough rights for this"
     delete:
       security:
       - bearerAuth: []
       tags:
       - User
       parameters:
-      - in: header
-        name: Authorization
-        required: true
-        schema:
-          type: string
-        description: Authorization Bearer
-        
       - name: id
         in: path
         required: true
@@ -2214,7 +1576,6 @@ paths:
                 "$ref": "#/components/schemas/UserDto"
         '404':
           description: Not Found
-        
         '401':
             description: Unauthorized
             content:
@@ -2225,18 +1586,19 @@ paths:
                     errorMessage:
                       type: string
                       example: "User must be logged in"
-          
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorMessage:
-                    type: string
-                    example: "Not enough rights for this"
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMessage:
+                      type: string
+                      example: "Not enough rights for this"
     get:
+      security:
+      - bearerAuth: []
       tags:
       - User
       parameters:
@@ -2261,6 +1623,26 @@ paths:
                 "$ref": "#/components/schemas/UserDto"
         '404':
           description: Not Found
+        '401':
+            description: Unauthorized
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMessage:
+                      type: string
+                      example: "User must be logged in"
+        '403':
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMessage:
+                      type: string
+                      example: "Not enough rights for this"
   "/api/v1/users/login":
     post:
       tags:
@@ -2312,13 +1694,13 @@ paths:
           content:
             text/plain:
               schema:
-                "$ref": "#/components/schemas/LoginDto"
+                "$ref": "#/components/schemas/UserIdPasswordDto"
             application/json:
               schema:
-                "$ref": "#/components/schemas/LoginDto"
+                "$ref": "#/components/schemas/UserIdPasswordDto"
             text/json:
               schema:
-                "$ref": "#/components/schemas/LoginDto"
+                "$ref": "#/components/schemas/UserIdPasswordDto"
         '400':
           description: Bad Request
         '409':
@@ -2440,6 +1822,13 @@ components:
           type: integer
           format: int32
       additionalProperties: false
+    CoachIdDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+      additionalProperties: false
     CoachSortState:
       enum:
       - IdAsc
@@ -2504,6 +1893,13 @@ components:
           type: integer
           format: int32
           nullable: true
+        id:
+          type: integer
+          format: int32
+      additionalProperties: false
+    PlayerIdDto:
+      type: object
+      properties:
         id:
           type: integer
           format: int32
@@ -2574,6 +1970,22 @@ components:
           type: string
           nullable: true
         permission:
+          type: string
+          nullable: true
+        id:
+          type: integer
+          format: int32
+      additionalProperties: false
+    UserIdPasswordDto:
+      type: object
+      properties:
+        login:
+          type: string
+          nullable: true
+        permission:
+          type: string
+          nullable: true
+        password:
           type: string
           nullable: true
         id:

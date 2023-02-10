@@ -35,7 +35,6 @@ namespace db_cp.Controllers
             this.coachConverters = coachConverters;
         }
 
-        [EnableCors("MyPolicy")]
         [HttpGet]
         public IActionResult GetAll(
             [FromQuery] CoachFilterDto filter,
@@ -49,7 +48,7 @@ namespace db_cp.Controllers
         [ProducesResponseType(typeof(CoachDto), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
-        public IActionResult Add(CoachDto coachDto)
+        public IActionResult Add(CoachBaseDto coachDto)
         {
             try
             {
@@ -82,23 +81,23 @@ namespace db_cp.Controllers
             }
         }
 
-        [HttpPatch("{id}")]
-        [ProducesResponseType(typeof(CoachDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
-        public IActionResult Patch(int id, CoachBaseDto coach)
-        {
-            try
-            {
-                var updatedCoach = coachService.Update(coachConverters.convertPatch(id, coach));
-                return updatedCoach != null ? Ok(mapper.Map<CoachDto>(updatedCoach)) : NotFound();
-            }
-            catch (Exception ex)
-            {
-                return Conflict(ex.Message);
-            }
-        }
+        // [HttpPatch("{id}")]
+        // [ProducesResponseType(typeof(CoachDto), StatusCodes.Status200OK)]
+        // [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        // [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        // [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
+        // public IActionResult Patch(int id, CoachBaseDto coach)
+        // {
+        //     try
+        //     {
+        //         var updatedCoach = coachService.Update(coachConverters.convertPatch(id, coach));
+        //         return updatedCoach != null ? Ok(mapper.Map<CoachDto>(updatedCoach)) : NotFound();
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         return Conflict(ex.Message);
+        //     }
+        // }
 
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(CoachDto), StatusCodes.Status200OK)]

@@ -34,7 +34,6 @@ namespace db_cp.Controllers
             this.agentConverters = agentConverters;
         }
 
-        [EnableCors("MyPolicy")]
         [HttpGet]
         public IActionResult GetAll(
             [FromQuery] AgentSortState? sortState
@@ -47,7 +46,7 @@ namespace db_cp.Controllers
         [ProducesResponseType(typeof(AgentDto), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
-        public IActionResult Add(AgentDto agentDto)
+        public IActionResult Add(AgentBaseDto agentDto)
         {
             try
             {
@@ -80,23 +79,23 @@ namespace db_cp.Controllers
             }
         }
 
-        [HttpPatch("{id}")]
-        [ProducesResponseType(typeof(AgentDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
-        public IActionResult Patch(int id, AgentBaseDto agent)
-        {
-            try
-            {
-                var updatedAgent = agentService.Update(agentConverters.convertPatch(id, agent));
-                return updatedAgent != null ? Ok(mapper.Map<AgentDto>(updatedAgent)) : NotFound();
-            }
-            catch (Exception ex)
-            {
-                return Conflict(ex.Message);
-            }
-        }
+        // [HttpPatch("{id}")]
+        // [ProducesResponseType(typeof(AgentDto), StatusCodes.Status200OK)]
+        // [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        // [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        // [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
+        // public IActionResult Patch(int id, AgentBaseDto agent)
+        // {
+        //     try
+        //     {
+        //         var updatedAgent = agentService.Update(agentConverters.convertPatch(id, agent));
+        //         return updatedAgent != null ? Ok(mapper.Map<AgentDto>(updatedAgent)) : NotFound();
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         return Conflict(ex.Message);
+        //     }
+        // }
 
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(AgentDto), StatusCodes.Status200OK)]
