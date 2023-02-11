@@ -107,8 +107,9 @@ namespace db_cp
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "JWTToken_Auth_API",
-                    Version = "v1"
+                    Title = "FootballCheck",
+                    Version = "v1",
+                    Description = "The API for the FootballCheck project"
                 });
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
                     In = ParameterLocation.Header, 
