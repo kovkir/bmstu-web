@@ -18,6 +18,9 @@ using db_cp.Repository;
 using System.Collections.Generic;
 using Microsoft.OpenApi.Models;
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+
 namespace db_cp
 {
     public class Startup
@@ -33,6 +36,33 @@ namespace db_cp
         // This method gets called by the runtime
         public virtual void ConfigureServices(IServiceCollection services)
         {
+            // JWT Authorization
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.RequireHttpsMetadata = false;
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            // укзывает, будет ли валидироваться издатель при валидации токена
+                            ValidateIssuer = true,
+                            // строка, представляющая издателя
+                            ValidIssuer = AuthOptions.ISSUER,
+
+                            // будет ли валидироваться потребитель токена
+                            ValidateAudience = true,
+                            // установка потребителя токена
+                            ValidAudience = AuthOptions.AUDIENCE,
+                            // будет ли валидироваться время существования
+                            ValidateLifetime = true,
+
+                            // установка ключа безопасности
+                            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                            // валидация ключа безопасности
+                            ValidateIssuerSigningKey = true,
+                        };
+                    });
+            services.AddControllersWithViews();
+
 
             // Connect to DB
             var provider = _configuration["Database"];
@@ -71,7 +101,38 @@ namespace db_cp
             services.AddEndpointsApiExplorer();
 
             // Swagger
-            services.AddSwaggerGen();
+            // services.AddSwaggerGen();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "JWTToken_Auth_API",
+                    Version = "v1"
+                });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
+                    In = ParameterLocation.Header, 
+                    Description = "Please insert JWT with Bearer into field",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey ,
+                    BearerFormat = "JWT",
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                { 
+                    new OpenApiSecurityScheme 
+                    { 
+                        Reference = new OpenApiReference 
+                        { 
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer" 
+                        } 
+                    },
+                    new string[] { } 
+                } 
+                });
+            });
 
             // Admin Page
             services.AddCoreAdmin();
@@ -99,7 +160,7 @@ namespace db_cp
         {
             if (env.IsDevelopment())
             {
-                // app.UseSwagger();
+                // // app.UseSwagger();
                 app.UseSwagger(c => {
                     c.RouteTemplate = "/api/v1/swagger/{documentName}/swagger.json";
                 });
@@ -113,7 +174,7 @@ namespace db_cp
             }
 
             // Authentication
-            // app.UseAuthentication();
+            app.UseAuthentication();
             app.UseRouting();
             app.UseAuthorization();
             // app.UseHttpsRedirection();
@@ -124,7 +185,7 @@ namespace db_cp
             app.UseCoreAdminCustomUrl("admin");
 
             app.UseEndpoints(endpoints => {
-                endpoints.MapControllers();     // нет определенных маршрутов
+                endpoints.MapControllers(); // нет определенных маршрутов
             });
         }
     }

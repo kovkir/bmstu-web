@@ -12,7 +12,7 @@ using System.Linq;
 using AutoMapper;
 using db_cp.ModelsConverters;
 using Microsoft.AspNetCore.Cors;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace db_cp.Controllers
 {
@@ -35,6 +35,7 @@ namespace db_cp.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<AgentDto>), StatusCodes.Status200OK)]
         public IActionResult GetAll(
             [FromQuery] AgentSortState? sortState
         )
@@ -42,9 +43,11 @@ namespace db_cp.Controllers
             return Ok(mapper.Map<IEnumerable<AgentDto>>(agentService.GetAll(sortState)));
         }
 
+        [Authorize]
         [HttpPost]
         [ProducesResponseType(typeof(AgentDto), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
         public IActionResult Add(AgentBaseDto agentDto)
         {
@@ -59,9 +62,11 @@ namespace db_cp.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(AgentDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
         public IActionResult Put(int id, AgentBaseDto agent)
@@ -97,8 +102,10 @@ namespace db_cp.Controllers
         //     }
         // }
 
+        [Authorize]
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(AgentDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult Delete(int id)
         {

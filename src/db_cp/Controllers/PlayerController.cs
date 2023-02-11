@@ -12,7 +12,7 @@ using System.Linq;
 using AutoMapper;
 using db_cp.ModelsConverters;
 using Microsoft.AspNetCore.Cors;
-using db_cp.Repository;
+using Microsoft.AspNetCore.Authorization;
 
 namespace db_cp.Controllers
 {
@@ -37,6 +37,7 @@ namespace db_cp.Controllers
 
 
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<PlayerDto>), StatusCodes.Status200OK)]
         public IActionResult GetAll(
             [FromQuery] PlayerFilterDto filter,
             [FromQuery] PlayerSortState? sortState
@@ -45,9 +46,11 @@ namespace db_cp.Controllers
             return Ok(mapper.Map<IEnumerable<PlayerDto>>(playerService.GetAll(filter, sortState)));
         }
 
+        [Authorize]
         [HttpPost]
         [ProducesResponseType(typeof(PlayerDto), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
         public IActionResult Add(PlayerBaseDto playerDto)
         {
@@ -62,9 +65,11 @@ namespace db_cp.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(PlayerDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
         public IActionResult Put(int id, PlayerBaseDto player)
@@ -100,8 +105,10 @@ namespace db_cp.Controllers
         //     }
         // }
 
+        [Authorize]
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(PlayerDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult Delete(int id)
         {
