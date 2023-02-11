@@ -45,11 +45,11 @@ namespace db_cp.Controllers
             return Ok(mapper.Map<IEnumerable<CoachDto>>(coachService.GetAll(filter, sortState)));
         }
 
-        [Authorize]
+        // [Authorize]
         [HttpPost]
         [ProducesResponseType(typeof(CoachDto), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
+        // [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
         public IActionResult Add(CoachBaseDto coachDto)
         {
@@ -64,11 +64,11 @@ namespace db_cp.Controllers
             }
         }
 
-        [Authorize]
+        // [Authorize]
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(CoachDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
+        // [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
         public IActionResult Put(int id, CoachBaseDto coach)
@@ -104,10 +104,10 @@ namespace db_cp.Controllers
         //     }
         // }
 
-        [Authorize]
+        // [Authorize]
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(CoachDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
+        // [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult Delete(int id)
         {
