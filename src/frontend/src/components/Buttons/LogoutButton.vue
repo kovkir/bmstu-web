@@ -1,7 +1,7 @@
 <template>
   <button class="logout-button">
     <TextWhite fontSize="var(--little-text)" fontColor>
-        <slot></slot>
+      <slot></slot>
     </TextWhite>
   </button>
 </template>
@@ -20,10 +20,6 @@ export default defineComponent({
 
 <style>
 .logout-button{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
   background-color: transparent; 
   border: 2px solid var(--white);
   box-shadow: 0px 0px 10px var(--white);
@@ -34,7 +30,7 @@ export default defineComponent({
   padding-bottom: 7px;
   min-width: 250px;
 }
-.login-button:hover{
+.logout-button:hover{
   box-shadow: 0px 0px 20px var(--white);
 }
 </style>

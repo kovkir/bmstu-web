@@ -15,7 +15,7 @@
         SQUADS
       </NavbarButton>
     </router-link>
-    <router-link style="text-decoration: none" to="/">
+    <router-link style="text-decoration: none" to="/players">
       <NavbarButton>
         PLAYERS
       </NavbarButton>
@@ -30,7 +30,7 @@
         CLUBS
       </NavbarButton>
     </router-link>
-    <router-link style="text-decoration: none" to="/">
+    <router-link style="text-decoration: none" to="/agents">
       <NavbarButton>
         AGENTS
       </NavbarButton>

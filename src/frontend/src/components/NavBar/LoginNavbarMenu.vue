@@ -1,11 +1,11 @@
 <template>
   <div class="authorization-menu">
-    <router-link style="text-decoration: none" to="/">
+    <router-link style="text-decoration: none" to="/authorization">
       <LoginButton>
         LOG IN
       </LoginButton>
     </router-link>
-    <router-link style="text-decoration: none" to="/">
+    <router-link style="text-decoration: none" to="/registration">
       <SignUpButton>
         SIGN UP
       </SignUpButton>

@@ -33,8 +33,8 @@ export default defineComponent({
 
 :root{
   --little-text: 20px;
-  --middle-text: 48px;
-  --large-text: 60px;
+  --middle-text: 30px;
+  --large-text: 50px;
   --pink: rgb(233, 78, 105);
   --blue: rgb(32, 48, 79);
   --green: rgb(143, 196, 105);

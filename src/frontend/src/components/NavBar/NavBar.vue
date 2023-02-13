@@ -1,25 +1,16 @@
 <template>
   <nav class="navbar-container">
-    <!-- <div v-if="isInRole == 'user'">
+    <div v-if="isInRole == 'user'" class="navbar-menu-container">
       <UserNavbarMenu />
+      <LogoutNavbarMenu />
     </div>
-    <div v-else-if="isInRole == 'admin'">
+    <div v-else-if="isInRole == 'admin'" class="navbar-menu-container">
       <AdminNavbarMenu />
+      <LogoutNavbarMenu />
     </div>
-    <div v-else>
+    <div v-else class="navbar-menu-container">
       <GuestNavbarMenu />
-    </div> -->
-    <!-- <div>
-      <nav class="navbar-menu-container">
-        <AdminNavbarMenu />
-        <LogoutNavbarMenu />
-      </nav>
-    </div> -->
-    <div>
-      <nav class="navbar-menu-container">
-        <GuestNavbarMenu />
-        <LoginNavbarMenu />
-      </nav>
+      <LoginNavbarMenu />
     </div>
   </nav>
 </template>
@@ -32,8 +23,7 @@ import AdminNavbarMenu from '@/components/NavBar/AdminNavbarMenu.vue'
 import LoginNavbarMenu from '@/components/NavBar/LoginNavbarMenu.vue'
 import LogoutNavbarMenu from '@/components/NavBar/LogoutNavbarMenu.vue'
 
-// import auth from '@/authentificationService'
-// import UserInterface from '@/Interfaces/UserInterface'
+import auth from '@/authentificationService'
 
 export default defineComponent({
   name: "NavBar",
@@ -50,9 +40,15 @@ export default defineComponent({
     // }
   },
   computed: {
-    // isInRole () {
-    //   return auth.getCurrentUser().role;
-    // }
+    isInRole () {
+      if (auth.getCurrentUser()) { 
+        return auth.getCurrentUser().permission;
+      }
+      else {
+        auth.logout()
+        return "guest"
+      }
+    }
   },
   methods: {
     // setGuest: function() {

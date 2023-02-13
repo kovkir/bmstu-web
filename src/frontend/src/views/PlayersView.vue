@@ -1,24 +1,22 @@
 <template>
   <NavBarView>
-    
+    <PlayersTable />
   </NavBarView>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import NavBarView from "@/views/NavBarView.vue"
+import PlayersTable from "@/components/Tables/Players/PlayersTable.vue"
 
 export default defineComponent({
-  name: "HomeView",
+  name: "PlayersView",
   components: {
     NavBarView,
+    PlayersTable,
   },
   data() {
-    // return {
-    //   serverName: '',
-    //   gameName: '',
-    //   platformId: 0
-    // }
+
   },
   computed: {
     
@@ -31,14 +29,4 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.container {
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-}
 </style>

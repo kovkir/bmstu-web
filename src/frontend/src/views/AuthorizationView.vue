@@ -1,33 +1,21 @@
 <template>
   <NavBarView>
-    
+    <Authorization />
   </NavBarView>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import NavBarView from "@/views/NavBarView.vue"
+import Authorization from "@/components/Authorization/Authorization.vue"
 
 export default defineComponent({
-  name: "HomeView",
+  name: "AuthorizationView",
   components: {
     NavBarView,
+    Authorization,
   },
-  data() {
-    // return {
-    //   serverName: '',
-    //   gameName: '',
-    //   platformId: 0
-    // }
-  },
-  computed: {
-    
-  },
-  methods: {
-    
-  },
-});
-
+})
 </script>
 
 <style scoped>
@@ -40,5 +28,6 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
   gap: 10px;
+  padding-bottom: 15%;
 }
 </style>

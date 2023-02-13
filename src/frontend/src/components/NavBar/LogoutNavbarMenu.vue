@@ -1,21 +1,26 @@
 <template>
   <div class="authorization-menu">
-    <router-link style="text-decoration: none" to="/">
-      <LogoutButton>
-        LOG OUT
-      </LogoutButton>
-    </router-link>
+    <LogoutButton @click="logout">
+      LOG OUT
+    </LogoutButton>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import LogoutButton from '@/components/Buttons/LogoutButton.vue'
+import auth from "@/authentificationService"
 
 export default defineComponent({
   name: "LoginNavbarMenu",
   components: {
     LogoutButton,
+  },
+  methods: {
+    logout () {
+      auth.logout();
+      this.$router.push({ path: '/authorization' })
+    },
   }
 })
 </script>

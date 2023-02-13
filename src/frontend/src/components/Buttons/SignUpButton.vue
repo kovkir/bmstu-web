@@ -20,10 +20,6 @@ export default defineComponent({
 
 <style>
 .signup-button{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
   background-color: var(--pink); 
   border: 2px solid var(--white);
   box-shadow: 0px 0px 10px var(--white);

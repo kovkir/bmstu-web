@@ -1,6 +1,6 @@
 <template>
-  <button class="navbar-button">
-    <TextWhite fontSize="var(--little-text)" fontColor>
+  <button class="red-button">
+    <TextWhite fontSize="var(--middle-text)" fontColor>
         <slot></slot>
     </TextWhite>
   </button>
@@ -11,26 +11,26 @@ import { defineComponent } from 'vue'
 import TextWhite from '@/components/Text/TextWhite.vue'
 
 export default defineComponent({
-  name: "NuvbarButton",
+  name: "RedButton",
   components: {
-    TextWhite
+    TextWhite,
   }
 })
 </script>
 
 <style>
-.navbar-button{
-  background-color: transparent; 
-  border: 2px solid var(--white);
-  box-shadow: 0px 0px 10px var(--white);
+.red-button{
+  background-color: var(--pink); 
+  border: 2px solid var(--pink);
+  box-shadow: 0px 0px 10px var(--gray);
   border-radius: 20px 20px 20px 20px;
   padding-left: 15px;
   padding-right: 15px;
   padding-top: 7px;
   padding-bottom: 7px;
-  min-width: 120px;
+  /* min-width: 120px; */
 }
-.navbar-button:hover{
-  box-shadow: 0px 0px 20px var(--white);
+.red-button:hover{
+  box-shadow: 0px 0px 20px var(--pink);
 }
 </style>

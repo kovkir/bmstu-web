@@ -1,33 +1,21 @@
 <template>
   <NavBarView>
-    
+    <Registration />
   </NavBarView>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import NavBarView from "@/views/NavBarView.vue"
+import Registration from "@/components/Authorization/Registration.vue"
 
 export default defineComponent({
-  name: "HomeView",
+  name: "RegistrationView",
   components: {
     NavBarView,
+    Registration,
   },
-  data() {
-    // return {
-    //   serverName: '',
-    //   gameName: '',
-    //   platformId: 0
-    // }
-  },
-  computed: {
-    
-  },
-  methods: {
-    
-  },
-});
-
+})
 </script>
 
 <style scoped>
@@ -40,5 +28,6 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
   gap: 10px;
+  padding-bottom: 13%;
 }
 </style>
