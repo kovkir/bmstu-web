@@ -20,11 +20,11 @@ insert into public."Coach"("Surname", "Country", "WorkExperience")
 values('Rivers', 'Japan', 35);
 
 insert into public."Player"("ClubId", "Surname", "Rating", "Country", "Price")
-values(302, 'Messi', 94, 'Argentina', 180000);
+values(1, 'Messi', 94, 'Argentina', 180000);
 insert into public."Player"("ClubId", "Surname", "Rating", "Country", "Price")
-values(254, 'Ronaldo', 94, 'Portugal', 168000);
+values(2, 'Ronaldo', 94, 'Portugal', 168000);
 insert into public."Player"("ClubId", "Surname", "Rating", "Country", "Price")
-values(328, 'Hazard', 91, 'Belgium', 147000);
+values(3, 'Hazard', 91, 'Belgium', 147000);
 
 insert into public."Squad"("CoachId", "Name", "Rating")
 values(1, 'Legend 17', 0);

@@ -18,7 +18,7 @@
     PRICE
   </TextPink>
   <TextPink  v-if="isInRole != 'guest'" fontSize="var(--middle-text)">
-    MY SQUAD
+    SQUAD
   </TextPink>
 </template>
 

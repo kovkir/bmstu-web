@@ -19,6 +19,7 @@ namespace db_cp.Services
 
         SquadBL GetByID(int id);
         SquadBL GetByName(string name);
+        SquadPlayerBL GetSquadPlayer(int squadId, int playerId);
 
         IEnumerable<SquadBL> GetByRating(uint rating);
         IEnumerable<SquadBL> GetAll(SquadSortState? sortOrder);
@@ -88,6 +89,11 @@ namespace db_cp.Services
         public SquadBL GetByName(string name)
         {
             return _mapper.Map<SquadBL>(_squadRepository.GetByName(name));
+        }
+
+        public SquadPlayerBL GetSquadPlayer(int squadId, int playerId)
+        {
+            return _mapper.Map<SquadPlayerBL>(_squadRepository.GetSquadPlayer(squadId, playerId));
         }
 
         public IEnumerable<SquadBL> GetByRating(uint rating)

@@ -132,7 +132,7 @@ namespace db_cp.Controllers
         }
 
         [HttpPost("register")]
-        [ProducesResponseType(typeof(UserIdPasswordDto), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(UserIdPasswordDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(void), StatusCodes.Status409Conflict)]
         public IActionResult Register(LoginDto loginDto)
@@ -148,7 +148,7 @@ namespace db_cp.Controllers
         }
 
         [HttpPost("login")]
-        [ProducesResponseType(typeof(UserDto), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult Login(LoginDto loginDto)

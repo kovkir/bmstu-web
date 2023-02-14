@@ -28,7 +28,7 @@ export default defineComponent({
   padding-right: 15px;
   padding-top: 7px;
   padding-bottom: 7px;
-  /* min-width: 120px; */
+  width: 100%;
 }
 .red-button:hover{
   box-shadow: 0px 0px 20px var(--pink);

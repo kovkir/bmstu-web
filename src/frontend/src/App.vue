@@ -37,7 +37,7 @@ export default defineComponent({
   --large-text: 50px;
   --pink: rgb(233, 78, 105);
   --blue: rgb(32, 48, 79);
-  --green: rgb(143, 196, 105);
+  --green: rgb(103, 173, 53);
   --white: rgb(255, 255, 255);
   --gray: rgb(108, 104, 104);
 

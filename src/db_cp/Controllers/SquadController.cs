@@ -146,6 +146,17 @@ namespace db_cp.Controllers
         }
 
         // [Authorize]
+        [HttpGet("{squadId}/players/{playerId}")]
+        [ProducesResponseType(typeof(SquadPlayerDto), StatusCodes.Status200OK)]
+        // [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        public IActionResult GetSquadPlayer(int squadId, int playerId)
+        {
+            var squadPlayer = squadService.GetSquadPlayer(squadId, playerId);
+            return squadPlayer != null ? Ok(mapper.Map<SquadPlayerDto>(squadPlayer)) : NotFound();
+        }
+
+        // [Authorize]
         [HttpGet("{squadId}/coach")]
         [ProducesResponseType(typeof(CoachDto), StatusCodes.Status200OK)]
         // [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]

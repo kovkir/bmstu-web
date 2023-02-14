@@ -13,7 +13,6 @@
 import { defineComponent } from 'vue'
 import PlayersRow from "@/components/Tables/Players/PlayersRow.vue"
 import PlayersRowTitle from "@/components/Tables/Players/PlayersRowTitle.vue"
-
 import PlayerInterface from '@/Interfaces/PlayerInterface'
 
 export default defineComponent({
@@ -50,7 +49,7 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   margin: 0;
-  width: 60%;
+  width: 80%;
   height: 90%;
   justify-content: top;
   padding-top: 5%;
