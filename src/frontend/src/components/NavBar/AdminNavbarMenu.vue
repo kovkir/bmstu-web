@@ -25,7 +25,7 @@
         PLAYERS
       </NavbarButton>
     </router-link>
-    <router-link style="text-decoration: none" to="/">
+    <router-link style="text-decoration: none" to="/coaches">
       <NavbarButton>
         COACHES
       </NavbarButton>

@@ -4,6 +4,7 @@ import AuthorizationView from "@/views/AuthorizationView.vue"
 import RegistrationView from "@/views/RegistrationView.vue"
 import AgentsView from "@/views/AgentsView.vue"
 import PlayersView from "@/views/PlayersView.vue"
+import CoachesView from "@/views/CoachesView.vue"
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -30,6 +31,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/players",
     name: "players",
     component: PlayersView,
+  },
+  {
+    path: "/coaches",
+    name: "coaches",
+    component: CoachesView,
   },
 ];
 

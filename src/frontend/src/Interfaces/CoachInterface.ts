@@ -12,7 +12,7 @@ export interface Coach {
 }
 
 const client = axios.create({
-    baseURL: 'https://localhost:5001/api/v1/clubs',
+    baseURL: 'https://localhost:5001/api/v1/coaches',
     validateStatus: function (status) {
         return status < 500;
     }

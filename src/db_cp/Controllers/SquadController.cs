@@ -160,9 +160,11 @@ namespace db_cp.Controllers
         [HttpGet("{squadId}/coach")]
         [ProducesResponseType(typeof(CoachDto), StatusCodes.Status200OK)]
         // [ProducesResponseType(typeof(void), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
         public IActionResult GetCoachBySquadId(int squadId)
         {
-            return Ok(mapper.Map<IEnumerable<CoachDto>>(coachService.GetCoachBySquadId(squadId)));
+            var coach = coachService.GetCoachBySquadId(squadId);
+            return coach != null ? Ok(mapper.Map<CoachDto>(coach)) : NotFound();
         }
 
         // [Authorize]
@@ -227,7 +229,7 @@ namespace db_cp.Controllers
         {
             try
             {
-                return Ok(mapper.Map<SquadDto>(squadService.DeletePlayerFromMySquad(squadId, coachId)));
+                return Ok(mapper.Map<SquadDto>(squadService.DeleteCoachFromMySquad(squadId, coachId)));
             }
             catch (Exception ex)
             {
