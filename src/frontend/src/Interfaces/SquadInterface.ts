@@ -15,6 +15,10 @@ export interface PlayerId {
     id: Number,
 }
 
+export interface CoachId {
+    id: Number,
+}
+
 const client = axios.create({
     baseURL: 'https://localhost:5001/api/v1/squads',
     validateStatus: function (status) {
@@ -57,5 +61,26 @@ export default {
     deletePlayerFromSquad(squadId: number, playerId: number) {
         console.log("delete SquadPlayer:", {squadId, playerId});
         return this.execute('delete', `/${squadId}/players/${playerId}`);
+    },
+
+    async isCoachInSquad(squadId: Number, coachId: Number) {
+        const result = await this.execute('get', `/${squadId}/coach`);
+        console.log("getSquadCoach Status:", result.status);
+        
+        if (result.status == 200 && result.data.id == coachId) {
+            return true;
+        }
+        return false;
+    },
+
+    async addCoachToSquad(squadId: number, id: number) {
+        console.log("add SquadCoach:", {squadId, id});
+        const result = await this.execute('post', `/${squadId}/coach`, {id});
+        console.log("addSquadCoach Status:", result.status);
+    },
+
+    deleteCoachFromSquad(squadId: number, coachId: number) {
+        console.log("delete SquadCoach:", {squadId, coachId});
+        return this.execute('delete', `/${squadId}/coach/${coachId}`);
     },
 }

@@ -35,7 +35,7 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
+<style scoped> 
 .player-row-guest {
   padding: 10px;
   display: grid;
