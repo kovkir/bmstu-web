@@ -1,5 +1,6 @@
 <template>
   <input v-model="data" v-if="name == 'password'" type="password" class="input-line" :style="{fontSize}" :placeholder="defaultText">
+  <input v-model="data" v-else-if="name == 'select'" class="select-input-line" :style="{fontSize}" :placeholder="defaultText">
   <input v-model="data" v-else class="input-line" :style="{fontSize}" :placeholder="defaultText">
 </template>
 
@@ -32,8 +33,19 @@ export default defineComponent({
   border: 1px solid var(--gray);
   padding-left: 20px;
   padding-right: 20px;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  color: var(--gray);
+}
+.select-input-line {
+  background: var(--white);
+  box-shadow: 0px 0px 20px var(--white);
+  border-radius: 20px 20px 20px 20px;
+  border: 1px solid var(--white);
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 15px;
+  padding-bottom: 15px;
   color: var(--gray);
 }
 </style>

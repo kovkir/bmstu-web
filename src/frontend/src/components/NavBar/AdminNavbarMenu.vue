@@ -5,7 +5,7 @@
         HOME
       </NavbarButton>
     </router-link>
-    <router-link style="text-decoration: none" to="/">
+    <router-link style="text-decoration: none" to="/mysquad">
       <NavbarButton>
         MY SQUAD
       </NavbarButton>

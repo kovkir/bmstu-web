@@ -1,7 +1,7 @@
 <template>
   <button class="input-button">
     <TextWhite fontSize="var(--middle-text)" fontColor>
-        <slot></slot>
+      <slot></slot>
     </TextWhite>
   </button>
 </template>
@@ -26,8 +26,8 @@ export default defineComponent({
   border-radius: 20px 20px 20px 20px;
   padding-left: 15px;
   padding-right: 15px;
-  padding-top: 7px;
-  padding-bottom: 7px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   /* min-width: 120px; */
 }
 .input-button:hover{

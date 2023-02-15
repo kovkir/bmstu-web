@@ -28,7 +28,7 @@ export default defineComponent({
   padding-right: 15px;
   padding-top: 7px;
   padding-bottom: 7px;
-  min-width: 250px;
+  min-width: 120px;
 }
 .logout-button:hover{
   box-shadow: 0px 0px 20px var(--white);

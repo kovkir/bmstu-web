@@ -49,11 +49,11 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   margin: 0;
-  width: 80%;
+  width: 90%;
   height: 90%;
   justify-content: top;
   padding-top: 5%;
-  align-items: center;
+  align-items: flex-start;
   /* border: 2px solid var(--gray); */
 }
 </style>

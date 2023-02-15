@@ -72,11 +72,11 @@ export default defineComponent({
   methods: {
     addPlayer: function() {
       SquadInterface.addPlayerToSquad(auth.getCurrentUser().id, this.player.id);
-      router.push("/");
+      router.push("/mysquad");
     },
     deletePlayer: function() {
       SquadInterface.deletePlayerFromSquad(auth.getCurrentUser().id, this.player.id);
-      router.push("/");
+      router.push("/mysquad");
     },
   },
 })

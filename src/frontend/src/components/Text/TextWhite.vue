@@ -18,7 +18,7 @@ export default defineComponent({
 <style scoped>
 .white-text {
   color: var(--white);
-  text-shadow: 0px 0px 0px var(--white);
+  text-shadow: 0px 0px 15px var(--gray);
 }
 
 /* .white-text:hover{

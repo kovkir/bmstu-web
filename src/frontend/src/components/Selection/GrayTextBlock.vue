@@ -1,14 +1,20 @@
 <template>
-  <div class="gray-text-block" :style="{fontSize}">
-    <slot></slot>
+  <div class="gray-text-block">
+    <TextGray :style="{fontSize}">
+      <slot></slot>
+    </TextGray>
   </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
+import TextGray from "@/components/Text/TextGray.vue"
 
 export default defineComponent({
   name: "TextBlock",
+  components: {
+    TextGray,
+  },
   props: {
     fontSize: String,
   },
@@ -25,6 +31,6 @@ export default defineComponent({
   padding-right: 20px;
   padding-top: 10px;
   padding-bottom: 10px;
-  color: var(--gray);
+  /* color: var(--gray); */
 }
 </style>

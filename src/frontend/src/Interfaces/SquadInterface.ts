@@ -52,6 +52,12 @@ export default {
         return result.status == 200;
     },
 
+    async getPlayers(squadId: Number) {
+        const result = await this.execute('get', `/${squadId}/players`);
+        console.log("get players from squad Status:", result.status);
+        return result;
+    },
+
     async addPlayerToSquad(squadId: number, id: number) {
         console.log("add SquadPlayer:", {squadId, id});
         const result = await this.execute('post', `/${squadId}/players`, {id});
@@ -71,6 +77,12 @@ export default {
             return true;
         }
         return false;
+    },
+
+    async getCoach(squadId: Number) {
+        const result = await this.execute('get', `/${squadId}/coach`);
+        console.log("get coach from squad Status:", result.status);
+        return result;
     },
 
     async addCoachToSquad(squadId: number, id: number) {

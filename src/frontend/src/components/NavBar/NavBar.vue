@@ -35,9 +35,7 @@ export default defineComponent({
     LogoutNavbarMenu
   },
   data() {
-    // return {
-    //   componentName: 'GuestNavbarMenu'
-    // }
+
   },
   computed: {
     isInRole () {
@@ -51,20 +49,7 @@ export default defineComponent({
     }
   },
   methods: {
-    // setGuest: function() {
-    //   console.log('guest')
-    //   console.log(auth.getCurrentUser())
-    //   this.componentName = 'GuestNavbarMenu'
-    // },
-    // setUser: function() {
-    //   auth.logout()
-    //   location.reload()
-    // },
-    // setAdmin: async function() {
-    //   console.log(await UserInterface.getAll());
-    //   console.log('admin')
-    //   this.componentName = 'AdminNavbarMenu'
-    // },
+
   }
 })
 </script>

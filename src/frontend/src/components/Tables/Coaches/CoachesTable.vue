@@ -49,7 +49,7 @@
     display: flex;
     flex-direction: column;
     margin: 0;
-    width: 80%;
+    width: 90%;
     height: 90%;
     justify-content: top;
     padding-top: 5%;

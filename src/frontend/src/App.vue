@@ -11,7 +11,7 @@ import Background from "@/components/Background.vue"
 
 export default defineComponent({
   setup() {
-    // auth.logout()
+
   },
   components: {
     Background

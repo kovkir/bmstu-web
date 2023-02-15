@@ -25,9 +25,9 @@ export default defineComponent({
   margin: 0;
   width: 100%;
   height: 100%;
-  justify-content: center;
+  justify-content: top;
   align-items: center;
   gap: 10px;
-  padding-bottom: 13%;
+  padding-top: 5%;
 }
 </style>

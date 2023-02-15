@@ -1,21 +1,19 @@
 <template>
   <NavBarView>
-    <TextBlock>
-      football player
-    </TextBlock>
+    <SelectionPlayer />
   </NavBarView>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import NavBarView from "@/views/NavBarView.vue"
-import TextBlock from "@/components/TextBlock/TextBlock.vue"
+import SelectionPlayer from "@/components/Selection/SelectionPlayer.vue"
 
 export default defineComponent({
   name: "HomeView",
   components: {
     NavBarView,
-    TextBlock,
+    SelectionPlayer,
   },
   data() {
     // return {

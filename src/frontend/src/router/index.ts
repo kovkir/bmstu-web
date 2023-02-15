@@ -5,6 +5,7 @@ import RegistrationView from "@/views/RegistrationView.vue"
 import AgentsView from "@/views/AgentsView.vue"
 import PlayersView from "@/views/PlayersView.vue"
 import CoachesView from "@/views/CoachesView.vue"
+import MySquadView from "@/views/MySquadView.vue"
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -36,6 +37,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/coaches",
     name: "coaches",
     component: CoachesView,
+  },
+  {
+    path: "/mysquad",
+    name: "mysquad",
+    component: MySquadView,
   },
 ];
 

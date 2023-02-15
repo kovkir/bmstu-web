@@ -49,7 +49,7 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   margin: 0;
-  width: 60%;
+  width: 90%;
   height: 90%;
   justify-content: top;
   padding-top: 5%;
