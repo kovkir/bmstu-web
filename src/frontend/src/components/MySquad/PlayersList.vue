@@ -18,9 +18,6 @@ export default defineComponent({
   components: {
     PlayersItem,
   },
-  props: {
-
-  },
   data() {
     return {
       players: [],

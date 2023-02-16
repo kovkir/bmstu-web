@@ -1,17 +1,20 @@
 <template>
-  <Row class="agent-row">
+  <Row class="club-row">
     <TextGray fontSize="var(--middle-text)">
-      {{ agent.id }}
+      {{ club.id }}
     </TextGray>
     <TextGray fontSize="var(--middle-text)">
-      {{ agent.surname }}
+      {{ club.name }}
     </TextGray>
     <TextGray fontSize="var(--middle-text)">
-      {{ playerSurname }}
+      {{ club.country }}
     </TextGray>
     <TextGray fontSize="var(--middle-text)">
-      {{ agent.country }}
+      {{ club.foundationDate }}
     </TextGray>
+    <BlueButton v-on:click="viewPlayers">
+      View Players
+    </BlueButton>
   </Row> 
 </template>
 
@@ -19,36 +22,35 @@
 import { computed, defineComponent } from 'vue'
 import Row from "@/components/Tables/Row.vue"
 import TextGray from "@/components/Text/TextGray.vue"
-import PlayerInterface from "@/Interfaces/PlayerInterface"
+import BlueButton from "@/components/Buttons/BlueButton.vue"
+import router from "@/router";
 
 export default defineComponent({
-  name: "AgentsRow",
+  name: "ClubsRow",
   components: {
     Row,
     TextGray,
+    BlueButton,
   },
   props: {
-    agent: {
+    club: {
       type: Object,
       required: true
     },
   },
-  data() {
-    return {
-      playerSurname: '',
-    }
+  methods: {
+    viewPlayers() {
+      router.push({name: 'players', params: { ClubName: this.club.name } })
+    },
   },
-  mounted() {
-    PlayerInterface.getById(this.agent.playerId).then(json => {this.playerSurname = json.data.surname})
-  }
 })
 </script>
 
 <style scoped>
-.agent-row {
+.club-row {
   padding: 10px;
   display: grid;
-  grid-template-columns: 1fr 3fr 3fr 3fr;
+  grid-template-columns: 1fr 3fr 3fr 3fr 3fr;
   column-gap: 50px;
   width: 100%;
 }

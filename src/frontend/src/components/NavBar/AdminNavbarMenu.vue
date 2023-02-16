@@ -10,12 +10,12 @@
         MY SQUAD
       </NavbarButton>
     </router-link>
-    <router-link style="text-decoration: none" to="/">
+    <router-link style="text-decoration: none" to="/users">
       <NavbarButton>
         USERS
       </NavbarButton>
     </router-link>
-    <router-link style="text-decoration: none" to="/">
+    <router-link style="text-decoration: none" to="/squads">
       <NavbarButton>
         SQUADS
       </NavbarButton>
@@ -30,7 +30,7 @@
         COACHES
       </NavbarButton>
     </router-link>
-    <router-link style="text-decoration: none" to="/">
+    <router-link style="text-decoration: none" to="/clubs">
       <NavbarButton>
         CLUBS
       </NavbarButton>

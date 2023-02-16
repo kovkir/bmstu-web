@@ -10,6 +10,7 @@ using Microsoft.Build.Tasks;
 using AutoMapper;
 using db_cp.Repository;
 using System.Numerics;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace db_cp.Services
 {
@@ -89,6 +90,8 @@ namespace db_cp.Services
 
             if (sortState != null)
                 agents = SortAgentsByOption(agents, sortState.Value);
+            else
+                agents = SortAgentsByOption(agents, AgentSortState.IdAsc);
 
             return agents;
         }

@@ -5,6 +5,9 @@ import RegistrationView from "@/views/RegistrationView.vue"
 import AgentsView from "@/views/AgentsView.vue"
 import PlayersView from "@/views/PlayersView.vue"
 import CoachesView from "@/views/CoachesView.vue"
+import ClubsView from "@/views/ClubsView.vue"
+import SquadsView from "@/views/SquadsView.vue"
+import UsersView from "@/views/UsersView.vue"
 import MySquadView from "@/views/MySquadView.vue"
 
 const routes: Array<RouteRecordRaw> = [
@@ -28,11 +31,6 @@ const routes: Array<RouteRecordRaw> = [
     name: "agents",
     component: AgentsView,
   },
-  // {
-  //   path: "/players",
-  //   name: "players",
-  //   component: PlayersView,
-  // },
   {
     path: "/players:ClubName?:Surname?:Country?:MinPrice?:MaxPrice?:MinRating?:MaxRating?",
     name: "players",
@@ -43,6 +41,21 @@ const routes: Array<RouteRecordRaw> = [
     path: "/coaches",
     name: "coaches",
     component: CoachesView,
+  },
+  {
+    path: "/clubs",
+    name: "clubs",
+    component: ClubsView,
+  },
+  {
+    path: "/squads",
+    name: "squads",
+    component: SquadsView,
+  },
+  {
+    path: "/users",
+    name: "users",
+    component: UsersView,
   },
   {
     path: "/mysquad",

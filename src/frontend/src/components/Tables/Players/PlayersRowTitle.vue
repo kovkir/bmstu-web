@@ -11,7 +11,6 @@
 import { computed, defineComponent } from 'vue'
 import RowTitle from "@/components/Tables/RowTitle.vue"
 import PlayersRowTitleBody from "@/components/Tables/Players/PlayersRowTitleBody.vue"
-import TextPink from "@/components/Text/TextPink.vue"
 import auth from '@/authentificationService'
 
 export default defineComponent({
@@ -19,7 +18,6 @@ export default defineComponent({
   components: {
     RowTitle,
     PlayersRowTitleBody,
-    TextPink,
   },
   computed: {
     isInRole () {

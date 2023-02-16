@@ -1,19 +1,19 @@
 <template>
   <NavBarView>
-    <SelectionPlayer />
+    <UsersTable />
   </NavBarView>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import NavBarView from "@/views/NavBarView.vue"
-import SelectionPlayer from "@/components/Selection/SelectionPlayer.vue"
+import UsersTable from "@/components/Tables/Users/UsersTable.vue"
 
 export default defineComponent({
-  name: "HomeView",
+  name: "UsersView",
   components: {
     NavBarView,
-    SelectionPlayer,
+    UsersTable,
   },
   data() {
 
@@ -29,14 +29,4 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.container {
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-}
 </style>

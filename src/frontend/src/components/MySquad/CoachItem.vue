@@ -43,9 +43,6 @@ export default defineComponent({
     TextGray,
     TextPink,
   },
-  props: {
-
-  },
   data() {
     return {
       coach: {

@@ -32,15 +32,15 @@ export default {
         });
     },
 
-    getAll() {
-        return this.execute('get', '/');
-    },
-
     async getById(id: Number) {
         return await this.execute('get', `/${id}`)
     },
 
-    getAllByParameters(
+    // getAll() {
+    //     return this.execute('get', '/');
+    // },
+
+    getAll(
         ClubName: string,
         Surname: string,
         Country: string,
@@ -50,7 +50,6 @@ export default {
         MaxRating: number | null = null,
         ) {
         console.log("getAllPlayersByParameters: ", {ClubName, Surname, Country, MinPrice, MaxPrice, MinRating, MaxRating});
-        console.log("Players Object: ", this.execute('get', '/', null, {ClubName, Surname, Country, MinPrice, MaxPrice, MinRating, MaxRating}));
         return this.execute('get', '/', null, {ClubName, Surname, Country, MinPrice, MaxPrice, MinRating, MaxRating});
     },
 }

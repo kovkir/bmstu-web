@@ -31,4 +31,8 @@ export default {
     getAll() {
         return this.execute('get', '/');
     },
+
+    async getById(id: Number) {
+        return await this.execute('get', `/${id}`)
+    },
 }

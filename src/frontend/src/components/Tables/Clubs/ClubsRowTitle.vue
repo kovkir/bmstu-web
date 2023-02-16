@@ -1,16 +1,19 @@
 <template>
-  <RowTitle class="agent-title-row">
+  <RowTitle class="club-title-row">
     <TextPink fontSize="var(--middle-text)">
       ID
     </TextPink>
     <TextPink fontSize="var(--middle-text)">
-      SURNAME
-    </TextPink>
-    <TextPink fontSize="var(--middle-text)">
-      FOOTBALLER
+      NAME
     </TextPink>
     <TextPink fontSize="var(--middle-text)">
       COUNTRY
+    </TextPink>
+    <TextPink fontSize="var(--middle-text)">
+      FOUNDATION DATE
+    </TextPink>
+    <TextPink fontSize="var(--middle-text)">
+      PLAYERS
     </TextPink>
   </RowTitle> 
 </template>
@@ -21,7 +24,7 @@ import RowTitle from "@/components/Tables/RowTitle.vue"
 import TextPink from "@/components/Text/TextPink.vue"
 
 export default defineComponent({
-  name: "AgentsRowTitle",
+  name: "ClubsRowTitle",
   components: {
     RowTitle,
     TextPink,
@@ -30,10 +33,10 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.agent-title-row {
+.club-title-row {
   padding: 10px;
   display: grid;
-  grid-template-columns: 1fr 3fr 3fr 3fr;
+  grid-template-columns: 1fr 3fr 3fr 3fr 3fr;
   column-gap: 50px;
   width: 100%;
 }

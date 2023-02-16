@@ -40,15 +40,16 @@ export default {
         return this.execute('get', '/');
     },
 
+    async getById(id: Number) {
+        return await this.execute('get', `/${id}`)
+    },
+
     addSquad(coachId: number, name: String, rating: number) {
-        console.log("SquadObj:", {coachId, name, rating});
         return this.execute('post', '/', {coachId, name, rating});
     },
 
     async isPlayerInSquad(squadId: Number, playerId: Number) {
         const result = await this.execute('get', `/${squadId}/players/${playerId}`);
-        console.log("getSquadPlayer Status:", result.status);
-        
         return result.status == 200;
     },
 
@@ -59,20 +60,15 @@ export default {
     },
 
     async addPlayerToSquad(squadId: number, id: number) {
-        console.log("add SquadPlayer:", {squadId, id});
-        const result = await this.execute('post', `/${squadId}/players`, {id});
-        console.log("addSquadPlayer Status:", result.status);
+        return this.execute('post', `/${squadId}/players`, {id});
     },
 
     deletePlayerFromSquad(squadId: number, playerId: number) {
-        console.log("delete SquadPlayer:", {squadId, playerId});
         return this.execute('delete', `/${squadId}/players/${playerId}`);
     },
 
     async isCoachInSquad(squadId: Number, coachId: Number) {
         const result = await this.execute('get', `/${squadId}/coach`);
-        console.log("getSquadCoach Status:", result.status);
-        
         if (result.status == 200 && result.data.id == coachId) {
             return true;
         }
@@ -86,13 +82,10 @@ export default {
     },
 
     async addCoachToSquad(squadId: number, id: number) {
-        console.log("add SquadCoach:", {squadId, id});
-        const result = await this.execute('post', `/${squadId}/coach`, {id});
-        console.log("addSquadCoach Status:", result.status);
+        return this.execute('post', `/${squadId}/coach`, {id});
     },
 
     deleteCoachFromSquad(squadId: number, coachId: number) {
-        console.log("delete SquadCoach:", {squadId, coachId});
         return this.execute('delete', `/${squadId}/coach/${coachId}`);
     },
 }

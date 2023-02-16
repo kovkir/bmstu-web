@@ -1,16 +1,16 @@
 <template>
-  <RowTitle class="agent-title-row">
+  <RowTitle class="user-title-row">
     <TextPink fontSize="var(--middle-text)">
       ID
     </TextPink>
     <TextPink fontSize="var(--middle-text)">
-      SURNAME
+      LOGIN
     </TextPink>
     <TextPink fontSize="var(--middle-text)">
-      FOOTBALLER
+      RATING SQUAD
     </TextPink>
     <TextPink fontSize="var(--middle-text)">
-      COUNTRY
+      PERMISSION
     </TextPink>
   </RowTitle> 
 </template>
@@ -21,7 +21,7 @@ import RowTitle from "@/components/Tables/RowTitle.vue"
 import TextPink from "@/components/Text/TextPink.vue"
 
 export default defineComponent({
-  name: "AgentsRowTitle",
+  name: "UsersRowTitle",
   components: {
     RowTitle,
     TextPink,
@@ -30,10 +30,10 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.agent-title-row {
+.user-title-row {
   padding: 10px;
   display: grid;
-  grid-template-columns: 1fr 3fr 3fr 3fr;
+  grid-template-columns: 1.5fr 2fr 2fr 2fr;
   column-gap: 50px;
   width: 100%;
 }

@@ -74,8 +74,8 @@ namespace db_cp.Services
             if (IsNotExist(squad.Id))
                 return null;
 
-            if (IsExist(squad))
-                throw new Exception("Состав с таким названием уже существует");
+            // if (IsExist(squad))
+            //     throw new Exception("Состав с таким названием уже существует");
 
             return _mapper.Map<SquadBL>(_squadRepository.Update(_mapper.Map<Squad>(squad)));
         }
@@ -107,6 +107,8 @@ namespace db_cp.Services
 
             if (sortState != null)
                 squads = SortSquadsByOption(squads, sortState.Value);
+            else
+                squads = SortSquadsByOption(squads, SquadSortState.IdAsc);
 
             return squads;
         }

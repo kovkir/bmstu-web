@@ -2,7 +2,6 @@
   <div class="container">
     <AgentsRowTitle />
     <AgentsRow
-      class="item"
       v-for="agent in agents"
       v-bind:agent="agent">
     </AgentsRow>
@@ -13,7 +12,6 @@
 import { defineComponent } from 'vue'
 import AgentsRow from "@/components/Tables/Agents/AgentsRow.vue"
 import AgentsRowTitle from "@/components/Tables/Agents/AgentsRowTitle.vue"
-
 import AgentInterface from "@/Interfaces/AgentInterface"
 
 export default defineComponent({
@@ -22,16 +20,10 @@ export default defineComponent({
     AgentsRow,
     AgentsRowTitle
   },
-  props: {
-
-  },
   data() {
     return {
       agents: [],
     }
-  },
-  watch: {
-
   },
   mounted() {
     this.getAgents();

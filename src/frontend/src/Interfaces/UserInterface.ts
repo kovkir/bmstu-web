@@ -10,6 +10,10 @@ export interface User {
     permission: String
 }
 
+export interface UserPermission {
+    permission: String
+}
+
 const client = axios.create({
     baseURL: 'https://localhost:5001/api/v1/users',
     validateStatus: function (status) {
@@ -38,5 +42,11 @@ export default {
 
     getAll() {
         return this.execute('get', '/');
+    },
+
+    changePermission (id: String, permission: String) {
+        console.log("changePermission:", {id, permission} );
+        console.log(this.execute('patch', `/${id}`, {permission}));
+        return this.execute('patch', `/${id}`, {permission});
     },
 }

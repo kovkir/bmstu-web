@@ -2,7 +2,6 @@
   <div class="container">
     <PlayersRowTitle />
     <PlayersRow
-      class="item"
       v-for="player in players"
       v-bind:player="player">
     </PlayersRow>
@@ -21,13 +20,6 @@ export default defineComponent({
     PlayersRow,
     PlayersRowTitle
   },
-  // props: {
-  //   clubId: Number,
-  //   surname: String,
-  //   rating: Number,
-  //   country: String,
-  //   price: Number
-  // },
   props: [
     "ClubName", 
     "Surname",
@@ -43,16 +35,12 @@ export default defineComponent({
       
     }
   },
-  watch: {
-
-  },
   mounted() {
     this.getPlayers();
   },
   methods: {
     getPlayers() {
-      // PlayerInterface.getAll().then(json => {this.players = json.data});
-      PlayerInterface.getAllByParameters(
+      PlayerInterface.getAll(
         this.ClubName, this.Surname, this.Country, this.MinPrice, 
         this.MaxPrice, this.MinRating, this.MaxRating).then(json => {this.players = json.data});
     }

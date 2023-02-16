@@ -91,6 +91,8 @@ namespace db_cp.Services
 
             if (sortState != null)
                 clubs = SortClubsByOption(clubs, sortState.Value);
+            else
+                clubs = SortClubsByOption(clubs, ClubSortState.IdAsc);
 
             return clubs;
         }

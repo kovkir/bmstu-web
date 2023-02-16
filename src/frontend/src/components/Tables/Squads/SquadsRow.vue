@@ -1,16 +1,16 @@
 <template>
-  <Row class="agent-row">
+  <Row class="squad-row">
     <TextGray fontSize="var(--middle-text)">
-      {{ agent.id }}
+      {{ squad.id }}
     </TextGray>
     <TextGray fontSize="var(--middle-text)">
-      {{ agent.surname }}
+      {{ squad.name }}
     </TextGray>
     <TextGray fontSize="var(--middle-text)">
-      {{ playerSurname }}
+      {{ coachSurname }}
     </TextGray>
     <TextGray fontSize="var(--middle-text)">
-      {{ agent.country }}
+      {{ squad.rating }}
     </TextGray>
   </Row> 
 </template>
@@ -19,33 +19,33 @@
 import { computed, defineComponent } from 'vue'
 import Row from "@/components/Tables/Row.vue"
 import TextGray from "@/components/Text/TextGray.vue"
-import PlayerInterface from "@/Interfaces/PlayerInterface"
+import CoachInterface from "@/Interfaces/CoachInterface"
 
 export default defineComponent({
-  name: "AgentsRow",
+  name: "SquadsRow",
   components: {
     Row,
     TextGray,
   },
   props: {
-    agent: {
+    squad: {
       type: Object,
       required: true
     },
   },
   data() {
     return {
-      playerSurname: '',
+      coachSurname: '',
     }
   },
   mounted() {
-    PlayerInterface.getById(this.agent.playerId).then(json => {this.playerSurname = json.data.surname})
-  }
+    CoachInterface.getById(this.squad.coachId).then(json => {this.coachSurname = json.data.surname});
+  },
 })
 </script>
 
-<style scoped>
-.agent-row {
+<style scoped> 
+.squad-row {
   padding: 10px;
   display: grid;
   grid-template-columns: 1fr 3fr 3fr 3fr;
