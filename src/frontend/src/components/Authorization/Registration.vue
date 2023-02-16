@@ -7,7 +7,7 @@
           </TextGray>
           <InputRow @login="setLogin" name="login" fontSize="var(--middle-text)" defaultText="Login*"/>
           <InputRow @password="setPassword" name="password" fontSize="var(--middle-text)" defaultText="Password*"/>
-          <InputRow @passwordConfirm="setPasswordConfirm" fontSize="var(--middle-text)" defaultText="Password Confirm*"/>
+          <InputRow @passwordConfirm="setPasswordConfirm" name="passwordConfirm" fontSize="var(--middle-text)" defaultText="Password Confirm*"/>
           <InputButton>
             Sign Up
           </InputButton>

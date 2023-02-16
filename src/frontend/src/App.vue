@@ -21,15 +21,15 @@ export default defineComponent({
 
 
 <style>
-/* .notify {
+.notify {
   font-size: 28px;
-  background: rgba(0, 0, 0, 0.6) !important;
+  background: var(--white) !important;
   margin: 0 5px 5px;
   padding: 10px;
-  border-left: 15px solid var(--magenta);
-  color: var(--cyan);
-  text-shadow: 0px 0px 20px var(--magenta);
-} */
+  border-left: 15px solid var(--pink);
+  color: var(--gray);
+  text-shadow: 0px 0px 20px var(--wite);
+}
 
 :root{
   --little-text: 20px;

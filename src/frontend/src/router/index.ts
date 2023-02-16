@@ -28,10 +28,16 @@ const routes: Array<RouteRecordRaw> = [
     name: "agents",
     component: AgentsView,
   },
+  // {
+  //   path: "/players",
+  //   name: "players",
+  //   component: PlayersView,
+  // },
   {
-    path: "/players",
+    path: "/players:ClubName?:Surname?:Country?:MinPrice?:MaxPrice?:MinRating?:MaxRating?",
     name: "players",
     component: PlayersView,
+    props: true,
   },
   {
     path: "/coaches",

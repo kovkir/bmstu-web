@@ -4,12 +4,16 @@
       football player
     </SelectionBlock>
     <form class="form-column" @submit.prevent="onSubmit">
-      <InputRow @surname="setSurname" name="select" fontSize="var(--middle-text)" defaultText="Surname"/>
-      <InputRow @country="setCountry" name="select" fontSize="var(--middle-text)" defaultText="Country"/>
-      <InputRow @clubName="setClubName" name="select" fontSize="var(--middle-text)" defaultText="Club name"/>
+      <InputRow @surname="setSurname" name="surname" fontSize="var(--middle-text)" defaultText="Surname"/>
+      <InputRow @country="setCountry" name="country" fontSize="var(--middle-text)" defaultText="Country"/>
+      <InputRow @clubName="setClubName" name="clubName" fontSize="var(--middle-text)" defaultText="Club name"/>
       <div class="form-row">
-        <InputRow @surname="setSurname" name="select" class="item-row" fontSize="var(--middle-text)" defaultText="Minimal rating"/>
-        <InputRow @surname="setSurname" name="select" class="item-row" fontSize="var(--middle-text)" defaultText="Maximal rating"/>
+        <InputRow @minPrice="setMinPrice" name="minPrice" class="item-row" fontSize="var(--middle-text)" defaultText="Minimal price"/>
+        <InputRow @maxPrice="setMaxPrice" name="maxPrice" class="item-row" fontSize="var(--middle-text)" defaultText="Maximal price"/>
+      </div>
+      <div class="form-row">
+        <InputRow @minRating="setMinRating" name="minRating" class="item-row" fontSize="var(--middle-text)" defaultText="Minimal rating"/>
+        <InputRow @maxRating="setMaxRating" name="maxRating" class="item-row" fontSize="var(--middle-text)" defaultText="Maximal rating"/>
       </div>
       <InputButton>
         Find Players
@@ -23,6 +27,7 @@ import { computed, defineComponent } from "vue";
 import SelectionBlock from "@/components/Selection/SelectionBlock.vue"
 import InputButton from "@/components/Buttons/InputButton.vue"
 import InputRow from "@/components/Input/InputRow.vue"
+import router from "@/router";
 
 export default defineComponent({
   name: "SelectionPlayer",
@@ -36,22 +41,60 @@ export default defineComponent({
       surname: '',
       country: '',
       clubName: '',
+      minPrice: 0,
+      maxPrice: 1000000,
       minRating: 0,
-      maxRating: 99,
+      maxRating: 100,
     }
   },
   props: {
     fontSize: String,
   },
   methods: {
+    async onSubmit() {
+      if (this.minPrice > this.maxPrice) {
+        this.$notify({
+          title: "Error",
+          text: "MinPrice should be smaller than MaxPrice",
+        });
+        return;
+      }
+      if (this.minRating > this.maxRating) {
+        this.$notify({
+          title: "Error",
+          text: "MinRating should be smaller than MaxRating",
+        });
+        return;
+      }
+
+      console.log("Selection:", this.surname, this.country, this.clubName, this.minPrice, this.maxPrice, this.minRating, this.maxRating);
+      router.push({name: 'players', 
+        params: {
+          ClubName: this.clubName,
+          Surname: this.surname,
+          Country: this.country,
+          MinPrice: this.minPrice,
+          MaxPrice: this.maxPrice,
+          MinRating: this.minRating,
+          MaxRating: this.maxRating
+        }
+      })
+    },
     setSurname(surname : string) {
       this.surname = surname;
+      console.log("setSurname", this.surname);
     },
     setCountry(country : string) {
       this.country = country;
     },
     setClubName(clubName : string) {
       this.clubName = clubName;
+    },
+    setMinPrice(minPrice : number) {
+      this.minPrice = minPrice;
+    },
+    setMaxPrice(maxPrice : number) {
+      this.maxPrice = maxPrice;
     },
     setMinRating(minRating : number) {
       this.minRating = minRating;

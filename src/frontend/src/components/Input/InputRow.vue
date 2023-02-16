@@ -1,7 +1,7 @@
 <template>
-  <input v-model="data" v-if="name == 'password'" type="password" class="input-line" :style="{fontSize}" :placeholder="defaultText">
-  <input v-model="data" v-else-if="name == 'select'" class="select-input-line" :style="{fontSize}" :placeholder="defaultText">
-  <input v-model="data" v-else class="input-line" :style="{fontSize}" :placeholder="defaultText">
+  <input v-model="data" v-if="name == 'password' || name == 'passwordConfirm'" type="password" class="input-line" :style="{fontSize}" :placeholder="defaultText">
+  <input v-model="data" v-else-if="name == 'login'" class="input-line" :style="{fontSize}" :placeholder="defaultText">
+  <input v-model="data" v-else class="select-input-line" :style="{fontSize}" :placeholder="defaultText">
 </template>
 
 <script lang="ts">

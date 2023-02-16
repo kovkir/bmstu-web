@@ -1,6 +1,13 @@
 <template>
   <NavBarView>
-    <PlayersTable />
+    <PlayersTable 
+      v-bind:ClubName="ClubName"
+      v-bind:Surname="Surname"
+      v-bind:Country="Country"
+      v-bind:MinPrice="MinPrice"
+      v-bind:MaxPrice="MaxPrice"
+      v-bind:MinRating="MinRating"
+      v-bind:MaxRating="MaxRating" />
   </NavBarView>
 </template>
 
@@ -15,6 +22,15 @@ export default defineComponent({
     NavBarView,
     PlayersTable,
   },
+  props: [
+    "ClubName", 
+    "Surname",
+    "Country",
+    "MinPrice",
+    "MaxPrice",
+    "MinRating",
+    "MaxRating"
+  ],
   data() {
 
   },

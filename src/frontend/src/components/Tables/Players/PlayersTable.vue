@@ -21,9 +21,22 @@ export default defineComponent({
     PlayersRow,
     PlayersRowTitle
   },
-  props: {
-
-  },
+  // props: {
+  //   clubId: Number,
+  //   surname: String,
+  //   rating: Number,
+  //   country: String,
+  //   price: Number
+  // },
+  props: [
+    "ClubName", 
+    "Surname",
+    "Country",
+    "MinPrice",
+    "MaxPrice",
+    "MinRating",
+    "MaxRating"
+  ],
   data() {
     return {
       players: [],
@@ -38,7 +51,10 @@ export default defineComponent({
   },
   methods: {
     getPlayers() {
-      PlayerInterface.getAll().then(json => {this.players = json.data});
+      // PlayerInterface.getAll().then(json => {this.players = json.data});
+      PlayerInterface.getAllByParameters(
+        this.ClubName, this.Surname, this.Country, this.MinPrice, 
+        this.MaxPrice, this.MinRating, this.MaxRating).then(json => {this.players = json.data});
     }
   }
 })
