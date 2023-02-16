@@ -60,8 +60,8 @@ namespace db_cp.Services
             if (IsNotExist(user.Id))
                 return null;
 
-            if (IsExist(user))
-                throw new Exception("Пользователь с таким логином уже существует");
+            // if (IsExist(user))
+            //     throw new Exception("Пользователь с таким логином уже существует");
 
             return _mapper.Map<UserBL>(_userRepository.Update(_mapper.Map<User>(user)));
         }
@@ -101,6 +101,8 @@ namespace db_cp.Services
 
             if (sortState != null)
                 users = SortUsersByOption(users, sortState.Value);
+            else
+                users = SortUsersByOption(users, UserSortState.IdAsc);
 
             return users;
         }

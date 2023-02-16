@@ -19,6 +19,7 @@ namespace db_cp.Services
 
         SquadBL GetByID(int id);
         SquadBL GetByName(string name);
+        SquadPlayerBL GetSquadPlayer(int squadId, int playerId);
 
         IEnumerable<SquadBL> GetByRating(uint rating);
         IEnumerable<SquadBL> GetAll(SquadSortState? sortOrder);
@@ -73,8 +74,8 @@ namespace db_cp.Services
             if (IsNotExist(squad.Id))
                 return null;
 
-            if (IsExist(squad))
-                throw new Exception("Состав с таким названием уже существует");
+            // if (IsExist(squad))
+            //     throw new Exception("Состав с таким названием уже существует");
 
             return _mapper.Map<SquadBL>(_squadRepository.Update(_mapper.Map<Squad>(squad)));
         }
@@ -90,6 +91,11 @@ namespace db_cp.Services
             return _mapper.Map<SquadBL>(_squadRepository.GetByName(name));
         }
 
+        public SquadPlayerBL GetSquadPlayer(int squadId, int playerId)
+        {
+            return _mapper.Map<SquadPlayerBL>(_squadRepository.GetSquadPlayer(squadId, playerId));
+        }
+
         public IEnumerable<SquadBL> GetByRating(uint rating)
         {
             return _mapper.Map<IEnumerable<SquadBL>>(_squadRepository.GetByRating(rating));
@@ -101,6 +107,8 @@ namespace db_cp.Services
 
             if (sortState != null)
                 squads = SortSquadsByOption(squads, sortState.Value);
+            else
+                squads = SortSquadsByOption(squads, SquadSortState.IdAsc);
 
             return squads;
         }

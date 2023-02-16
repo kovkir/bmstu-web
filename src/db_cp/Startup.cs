@@ -37,31 +37,31 @@ namespace db_cp
         public virtual void ConfigureServices(IServiceCollection services)
         {
             // JWT Authorization
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                    .AddJwtBearer(options =>
-                    {
-                        options.RequireHttpsMetadata = false;
-                        options.TokenValidationParameters = new TokenValidationParameters
-                        {
-                            // укзывает, будет ли валидироваться издатель при валидации токена
-                            ValidateIssuer = true,
-                            // строка, представляющая издателя
-                            ValidIssuer = AuthOptions.ISSUER,
+            // services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //         .AddJwtBearer(options =>
+            //         {
+            //             options.RequireHttpsMetadata = false;
+            //             options.TokenValidationParameters = new TokenValidationParameters
+            //             {
+            //                 // укзывает, будет ли валидироваться издатель при валидации токена
+            //                 ValidateIssuer = true,
+            //                 // строка, представляющая издателя
+            //                 ValidIssuer = AuthOptions.ISSUER,
 
-                            // будет ли валидироваться потребитель токена
-                            ValidateAudience = true,
-                            // установка потребителя токена
-                            ValidAudience = AuthOptions.AUDIENCE,
-                            // будет ли валидироваться время существования
-                            ValidateLifetime = true,
+            //                 // будет ли валидироваться потребитель токена
+            //                 ValidateAudience = true,
+            //                 // установка потребителя токена
+            //                 ValidAudience = AuthOptions.AUDIENCE,
+            //                 // будет ли валидироваться время существования
+            //                 ValidateLifetime = true,
 
-                            // установка ключа безопасности
-                            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
-                            // валидация ключа безопасности
-                            ValidateIssuerSigningKey = true,
-                        };
-                    });
-            services.AddControllersWithViews();
+            //                 // установка ключа безопасности
+            //                 IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+            //                 // валидация ключа безопасности
+            //                 ValidateIssuerSigningKey = true,
+            //             };
+            //         });
+            // services.AddControllersWithViews();
 
 
             // Connect to DB
@@ -101,39 +101,39 @@ namespace db_cp
             services.AddEndpointsApiExplorer();
 
             // Swagger
-            // services.AddSwaggerGen();
+            services.AddSwaggerGen();
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Title = "FootballCheck",
-                    Version = "v1",
-                    Description = "The API for the FootballCheck project"
-                });
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
-                    In = ParameterLocation.Header, 
-                    Description = "Please insert JWT with Bearer into field",
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey ,
-                    BearerFormat = "JWT",
-                    Scheme = "Bearer"
-                });
+            // services.AddSwaggerGen(c =>
+            // {
+            //     c.SwaggerDoc("v1", new OpenApiInfo
+            //     {
+            //         Title = "FootballCheck",
+            //         Version = "v1",
+            //         Description = "The API for the FootballCheck project"
+            //     });
+            //     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
+            //         In = ParameterLocation.Header, 
+            //         Description = "Please insert JWT with Bearer into field",
+            //         Name = "Authorization",
+            //         Type = SecuritySchemeType.ApiKey ,
+            //         BearerFormat = "JWT",
+            //         Scheme = "Bearer"
+            //     });
 
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
-                { 
-                    new OpenApiSecurityScheme 
-                    { 
-                        Reference = new OpenApiReference 
-                        { 
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer" 
-                        } 
-                    },
-                    new string[] { } 
-                } 
-                });
-            });
+            //     c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+            //     { 
+            //         new OpenApiSecurityScheme 
+            //         { 
+            //             Reference = new OpenApiReference 
+            //             { 
+            //                 Type = ReferenceType.SecurityScheme,
+            //                 Id = "Bearer" 
+            //             } 
+            //         },
+            //         new string[] { } 
+            //     } 
+            //     });
+            // });
 
             // Admin Page
             services.AddCoreAdmin();
@@ -161,7 +161,7 @@ namespace db_cp
         {
             if (env.IsDevelopment())
             {
-                // // app.UseSwagger();
+                // app.UseSwagger();
                 app.UseSwagger(c => {
                     c.RouteTemplate = "/api/v1/swagger/{documentName}/swagger.json";
                 });

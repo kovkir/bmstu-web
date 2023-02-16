@@ -96,6 +96,8 @@ namespace db_cp.Services
 
             if (sortState != null)
                 coaches = SortCoachesByOption(coaches, sortState.Value);
+            else
+                coaches = SortCoachesByOption(coaches, CoachSortState.IdAsc);
 
             return coaches;
         }

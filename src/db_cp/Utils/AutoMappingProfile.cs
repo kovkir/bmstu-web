@@ -27,6 +27,8 @@ namespace db_cp.Utils
             CreateMap<PlayerDto, PlayerBL>().ReverseMap();
             CreateMap<SquadBaseDto, SquadBL>().ReverseMap();
             CreateMap<SquadDto, SquadBL>().ReverseMap();
+            CreateMap<SquadPlayerBaseDto, SquadPlayerBL>().ReverseMap();
+            CreateMap<SquadPlayerDto, SquadPlayerBL>().ReverseMap();
             CreateMap<UserBaseDto, UserBL>().ReverseMap();
             CreateMap<UserDto, UserBL>().ReverseMap();
             CreateMap<UserPasswordDto, UserBL>().ReverseMap();

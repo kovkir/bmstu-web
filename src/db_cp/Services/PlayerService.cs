@@ -117,6 +117,8 @@ namespace db_cp.Services
 
             if (sortState != null)
                 players = SortPlayersByOption(players, sortState.Value);
+            else
+                players = SortPlayersByOption(players, PlayerSortState.IdAsc);
 
             return players;
         }
